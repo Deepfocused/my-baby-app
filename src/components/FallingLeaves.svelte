@@ -1,80 +1,113 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  
-  interface Leaf {
-    id: number;
-    left: number;
-    animationDelay: number;
-    animationDuration: number;
-    emoji: string;
-  }
+	import { onMount } from 'svelte';
+	import type { Leaf } from '../types/types';
 
-  let leaves = $state<Leaf[]>([]);
-  
-  onMount(() => {
-    const emojis: string[] = ['🧑', '👩', '👶', '👨‍👩‍👦'];
-    const newLeaves: Leaf[] = [];
+	let leaves = $state<Leaf[]>([]);
 
-    // Create falling leaves
-    for (let i = 0; i < 21; i++) {
-      newLeaves.push({
-        id: i,
-        left: Math.random() * 100,
-        animationDelay: Math.random() * 10,
-        animationDuration: 8 + Math.random() * 4,
-        emoji: emojis[Math.floor(Math.random() * emojis.length)]
-      });
-    }
-    
-    leaves = newLeaves;
-  });
+	onMount(() => {
+		const emojis = [
+			'🤱🏻',
+			'🧑🏻‍🍼',
+			'👨🏻',
+			'👩🏻',
+			'👶🏻',
+			'👨🏻‍🍼',
+			'👨🏻‍👩🏻‍👦🏻',
+			'🙋🏻',
+			'🙋🏻‍♀️',
+			'🤸🏻‍♂️',
+			'🫶🏻',
+			'🎖️',
+			'🏅',
+			'💵',
+			'💴',
+			'💸',
+			'💰',
+			'📈',
+			'🌸',
+			'❤️'
+		];
+
+		leaves = Array.from({ length: 210 }, (_, i) => ({
+			id: i,
+			left: Math.random() * 100,
+			animationDelay: Math.random() * 10,
+			animationDuration: 10 + Math.random() * 10,
+			swayDuration: 0.5 + Math.random() * 1,
+			emoji: emojis[Math.floor(Math.random() * emojis.length)]
+		}));
+	});
 </script>
 
-<div class="fixed inset-0 pointer-events-none overflow-hidden">
-  {#each leaves as leaf (leaf.id)}
-    <div
-      class="absolute text-2xl opacity-60 animate-bounce"
-      style="
+<div class="pointer-events-none fixed inset-0">
+	{#each leaves as leaf (leaf.id)}
+		<div
+			class="animate-fall absolute scale-150 text-3xl opacity-50"
+			style="
         left: {leaf.left}%;
         animation-delay: {leaf.animationDelay}s;
         animation-duration: {leaf.animationDuration}s;
-        animation-iteration-count: infinite;
-        animation-timing-function: ease-in-out;
-        transform: translateY(-100px);
       "
-    >
-      <div
-        class="animate-pulse"
-        style="
-          animation-delay: {leaf.animationDelay + 1}s;
-          animation-duration: {leaf.animationDuration / 2}s;
-        "
-      >
-        {leaf.emoji}
-      </div>
-    </div>
-  {/each}
+		>
+			<div
+				class="animate-sway"
+				style="
+           animation-duration: {leaf.swayDuration}s;
+           "
+			>
+				{leaf.emoji}
+			</div>
+		</div>
+	{/each}
 </div>
 
 <style>
-  @keyframes fall {
-    0% {
-      transform: translateY(-100px) rotate(0deg);
-      opacity: 0;
-    }
-    10% {
-      opacity: 0.5;
-    }
-    90% {
-      opacity: 0.9;
-    }
-    100% {
-      transform: translateY(100vh) rotate(360deg);
-      opacity: 0;
-    }
-  }
-  
-  .animate-bounce {
-    animation-name: fall;
-  }
+	@keyframes fall {
+		0% {
+			transform: translate3d(0, -210px, 0) rotate3d(0, 0, 1, 0deg);
+			opacity: 0.25;
+		}
+		25% {
+			opacity: 0.5;
+		}
+		50% {
+			opacity: 0.75;
+		}
+		75% {
+			opacity: 1;
+		}
+		100% {
+			transform: translate3d(0, 120vh, 0) rotate3d(0, 0, 1, 360deg);
+			opacity: 1;
+		}
+	}
+
+	@keyframes sway {
+		0%,
+		100% {
+			transform: translate3d(0, 0, 0);
+		}
+		25% {
+			transform: translate3d(-3px, 0, 0);
+		}
+		50% {
+			transform: translate3d(3px, 0, 0);
+		}
+		75% {
+			transform: translate3d(-3px, 0, 0);
+		}
+	}
+
+	.animate-fall {
+		animation-name: fall;
+		animation-iteration-count: infinite;
+		animation-timing-function: ease-in-out;
+		transform: translate3d(0, -210px, 0);
+	}
+
+	.animate-sway {
+		animation-name: sway;
+		animation-iteration-count: infinite;
+		animation-timing-function: ease-in-out;
+	}
 </style>
