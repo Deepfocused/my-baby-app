@@ -77,7 +77,7 @@
 					>
 					<button
 						onclick={handleLogout}
-						class="text-md mr-2 ml-auto text-gray-500 underline transition-colors hover:text-gray-700"
+						class="text-md mr-2 ml-auto text-gray-500 underline transition-colors duration-300 hover:text-gray-700"
 					>
 						로그아웃
 					</button>
@@ -136,10 +136,10 @@
 	{/if}
 
 	<!-- Comments List -->
-	<div class="max-h-96 space-y-4 overflow-y-auto">
+	<div class="comment-scrollbar max-h-96 space-y-4 overflow-y-auto">
 		{#each comments as comment (comment.id)}
 			<div
-				class="rounded-2xl border border-pink-200 bg-gradient-to-r from-pink-100 to-blue-100 p-4 shadow-sm"
+				class="rounded-lg border border-pink-200 bg-gradient-to-r from-pink-100 to-blue-100 p-4 shadow-sm"
 			>
 				<div class="mb-2 flex items-start justify-between">
 					<div class="flex items-center space-x-2">
@@ -150,7 +150,7 @@
 					{#if comment.author === currentUser}
 						<button
 							onclick={() => deleteComment(comment.id)}
-							class="text-sm text-gray-400 transition-colors hover:text-red-500"
+							class="text-sm text-gray-400 transition-colors duration-300 hover:text-red-500"
 						>
 							🗑️
 						</button>

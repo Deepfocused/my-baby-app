@@ -204,7 +204,7 @@
 				<!-- 왼쪽 화살표 -->
 				<button
 					onclick={prevPhoto}
-					class="absolute left-0 z-14 cursor-pointer p-2 text-5xl text-red-300 hover:text-red-500 hover:scale-110 transition duration-300"
+					class="absolute left-0 z-14 cursor-pointer p-2 text-5xl text-red-300 transition duration-300 hover:scale-110 hover:text-red-500"
 					>‹</button
 				>
 
@@ -220,14 +220,14 @@
 				<!-- 오른쪽 화살표 -->
 				<button
 					onclick={nextPhoto}
-					class="absolute right-0 z-14 cursor-pointer p-2 text-5xl text-red-300 hover:text-red-500 hover:scale-110 transition duration-300"
+					class="absolute right-0 z-14 cursor-pointer p-2 text-5xl text-red-300 transition duration-300 hover:scale-110 hover:text-red-500"
 					>›</button
 				>
 
 				<!-- 삭제 버튼 -->
 				<button
 					onclick={() => removePhoto(photos[currentIndex].id)}
-					class="absolute top-2 right-2 cursor-pointer rounded-full px-2 py-1 text-xl shadow-md hover:scale-110 transition duration-300"
+					class="absolute top-2 right-2 cursor-pointer rounded-full px-2 py-1 text-xl shadow-md transition duration-300 hover:scale-110"
 				>
 					🗑️
 				</button>
@@ -257,7 +257,7 @@
 		aria-label="Close modal"
 	>
 		<div
-			class="flex w-[80%] h-[80%] flex-col items-center"
+			class="flex h-[80%] w-[80%] flex-col items-center"
 			onclick={(e) => {
 				e.stopPropagation();
 			}}
@@ -266,24 +266,26 @@
 			tabindex="0"
 			aria-label="Prevent Close modal"
 		>
-			<div class="z-22 relative w-full h-full flex items-center justify-center">
+			<div class="relative z-22 flex h-full w-full items-center justify-center">
 				<button
 					onclick={closeModal}
-					class="z-23 absolute top-1 right-4 cursor-pointer text-7xl text-red-300 hover:text-red-500 hover:scale-110 transition duration-300"
+					class="absolute top-1 right-4 z-23 cursor-pointer text-7xl text-red-300 transition duration-300 hover:scale-110 hover:text-red-500"
 					>×</button
 				>
 				<button
 					onclick={prevPhoto}
-					class="z-23 absolute left-4 cursor-pointer text-7xl text-red-300 hover:text-red-500 hover:scale-110 transition duration-300">‹</button
+					class="absolute left-4 z-23 cursor-pointer text-7xl text-red-300 transition duration-300 hover:scale-110 hover:text-red-500"
+					>‹</button
 				>
 				<img
 					src={photos[currentIndex].url}
 					alt={photos[currentIndex].name}
-					class="z-22 absolute w-full h-full cursor-pointer rounded-2xl object-cover shadow-xl"
+					class="absolute z-22 h-full w-full cursor-pointer rounded-2xl object-cover shadow-xl"
 				/>
 				<button
 					onclick={nextPhoto}
-					class="z-23 absolute right-4 cursor-pointer text-7xl text-red-300 hover:text-red-500 hover:scale-110 transition duration-300">›</button
+					class="absolute right-4 z-23 cursor-pointer text-7xl text-red-300 transition duration-300 hover:scale-110 hover:text-red-500"
+					>›</button
 				>
 			</div>
 			<!-- 업로드 시간 -->
