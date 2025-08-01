@@ -4,7 +4,6 @@
 	import CommentSection from '../components/CommentSection.svelte';
 	import MusicPlayer from '../components/MusicPlayer.svelte';
 	import FallingLeaves from '../components/FallingLeaves.svelte';
-
 	let isLoggedIn = $state<boolean>(false);
 	let currentUser = $state<string>('');
 
@@ -29,15 +28,15 @@
 	}
 </script>
 
-<div class="bg-gradient-to-br from-pink-50 via-blue-50 to-amber-50">
+<div class="bg-gradient-to-br from-teal-200 via-rose-100 to-lime-200">
 	<FallingLeaves />
 
-	<div class="relative z-21 container mx-auto max-w-md px-4 py-6">
+	<div class="relative z-7 container mx-auto max-w-md px-4 py-8">
 		<!-- Header -->
 		<div class="mb-8 text-center">
 			<div class="rounded-3xl border border-rose-200 bg-white/80 p-6 shadow-lg backdrop-blur-xs">
-				<h1 class="mb-2 text-2xl font-bold text-rose-400">🦾 귀여운 👶🏻순돌이🍼 탄생 🦾</h1>
-				<p class="font-bold text-orange-400">2025년 9월 20일에 태어나다!</p>
+				<h1 class="mb-2 text-2xl font-bold text-rose-500">🦾 귀여운 👶🏻순돌이🍼 탄생 🦾</h1>
+				<p class="font-bold text-orange-500">2025년 9월 20일에 태어나다!</p>
 				<div class="mt-1 flex justify-center space-x-2">
 					<span class="text-xl">👨🏻👩🏻👶🏻</span>
 				</div>
@@ -54,13 +53,8 @@
 		<CommentSection {isLoggedIn} {currentUser} {handleLogin} {handleLogout} />
 
 		<!-- Footer -->
-		<div class="mt-8 text-center text-sm text-gray-700">
+		<div class="mt-6 text-center text-sm text-gray-700">
 			<p>🌸❤️ Made by 순돌이 아빠 ❤️🌸</p>
-			<div class="mt-2 flex justify-center space-x-1">
-				<!-- <span>🌸</span>
-        <span>🍼</span>
-        <span>🌸</span> -->
-			</div>
 		</div>
 	</div>
 </div>

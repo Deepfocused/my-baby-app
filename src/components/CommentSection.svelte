@@ -1,4 +1,5 @@
 <script lang="ts">
+	//
 	import { onMount } from 'svelte';
 	import type { Comment, LoginForm, Props } from '../types/types';
 
@@ -56,18 +57,22 @@
 </script>
 
 <div class="rounded-3xl border border-purple-200 bg-white/80 p-6 shadow-lg backdrop-blur-xs">
-	<h3 class="mb-4 text-center text-lg font-semibold text-purple-500">💌 축하 메시지 💌</h3>
+	<div class="mb-6 text-center">
+		<span class="text-4xl">💌</span>
+		<span class="text-2xl font-bold text-purple-500">축하 메시지</span>
+		<span class="text-4xl">💌</span>
+	</div>
 
 	{#if isLoggedIn}
 		<!-- User Info & Comment Form -->
 		<div class="mb-6">
 			<!-- User Header -->
 			<div
-				class="flex-col rounded-2xl border border-pink-100 bg-gradient-to-r from-pink-50 to-blue-50 p-4"
+				class="flex-col rounded-2xl border border-pink-200 bg-gradient-to-r from-pink-50 to-blue-50 p-4"
 			>
 				<div class="mb-3 flex space-x-2">
 					<span class="text-md">👋</span>
-					<span class="text-md font-semibold text-gray-700"
+					<span class="text-md font-bold text-gray-700"
 						>환영합니다. <strong> {currentUser} </strong>님!!!</span
 					>
 					<button
@@ -82,13 +87,13 @@
 				<textarea
 					bind:value={newComment}
 					placeholder="이제 막 세상의 빛을 만난 저에게, 따뜻한 인사와 축복의 한마디 부탁드려요!"
-					class="w-full resize-none rounded-2xl border border-rose-200 bg-white px-4 py-4 transition-colors focus:border-rose-400 focus:outline-none"
+					class="w-full resize-none rounded-2xl border border-rose-200 bg-white px-4 py-4 transition-colors duration-300 focus:border-rose-400 focus:outline-none"
 					rows="3"
 				></textarea>
 				<button
 					onclick={addComment}
 					disabled={!newComment.trim()}
-					class="mt-2 w-full rounded-2xl bg-gradient-to-r from-pink-400 to-rose-400 py-3 font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50"
+					class="mt-2 w-full cursor-pointer rounded-2xl bg-gradient-to-r from-pink-400 to-rose-400 py-3 font-bold text-white shadow-lg transition duration-300 hover:scale-110 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50"
 				>
 					💕 메시지 남기기 💕
 				</button>
@@ -97,9 +102,9 @@
 	{:else}
 		<!-- Login Prompt & Form -->
 		<div class="mb-6">
-			<div class="rounded-2xl border border-pink-100 bg-gradient-to-r from-pink-50 to-blue-50 p-4">
+			<div class="rounded-2xl border border-pink-200 bg-gradient-to-r from-pink-50 to-blue-50 p-4">
 				<div class="mb-3 flex justify-center">
-					<span class="text-md font-semibold text-gray-800">아이디와 비밀번호를 입력해주세요</span>
+					<span class="text-md font-bold text-gray-800">이름과 비밀번호를 입력해주세요</span>
 				</div>
 
 				<form onsubmit={submitLogin}>
@@ -107,20 +112,20 @@
 						<input
 							type="text"
 							bind:value={loginForm.username}
-							placeholder="아이디"
+							placeholder="이름"
 							required
-							class="w-full rounded-2xl border border-pink-200 bg-white px-4 py-3 transition-colors focus:border-pink-400 focus:outline-none"
+							class="w-full rounded-2xl border border-pink-200 bg-white px-4 py-3 transition-colors duration-300 focus:border-pink-400 focus:outline-none"
 						/>
 						<input
 							type="password"
 							bind:value={loginForm.password}
 							placeholder="비밀번호"
 							required
-							class="w-full rounded-2xl border border-blue-200 bg-white px-4 py-3 transition-colors focus:border-blue-400 focus:outline-none"
+							class="w-full rounded-2xl border border-blue-200 bg-white px-4 py-3 transition-colors duration-300 focus:border-blue-400 focus:outline-none"
 						/>
 						<button
 							type="submit"
-							class="mt-1 w-full rounded-2xl bg-gradient-to-r from-pink-400 to-blue-400 py-3 font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+							class="mt-1 w-full rounded-2xl bg-gradient-to-r from-pink-400 to-blue-400 py-3 font-bold text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl"
 						>
 							💕 로그인 💕
 						</button>
@@ -134,7 +139,7 @@
 	<div class="max-h-96 space-y-4 overflow-y-auto">
 		{#each comments as comment (comment.id)}
 			<div
-				class="rounded-2xl border border-pink-100 bg-gradient-to-r from-pink-50 to-blue-50 p-4 shadow-sm"
+				class="rounded-2xl border border-pink-200 bg-gradient-to-r from-pink-100 to-blue-100 p-4 shadow-sm"
 			>
 				<div class="mb-2 flex items-start justify-between">
 					<div class="flex items-center space-x-2">
@@ -156,7 +161,7 @@
 			</div>
 		{:else}
 			<div class="text-center text-gray-500 py-8">
-				<span class="text-4xl mb-2 block">💭</span>
+				<span class="text-5xl mb-2 block">💭</span>
 				<p>💕순돌이에게 인사를 남겨주세요.👄</p>
 			</div>
 		{/each}

@@ -8,7 +8,7 @@
 	onMount(() => {
 		// Auto-play gentle music when page loads
 		if (audio) {
-			audio.volume = 0.3;
+			audio.volume = 0.5;
 			audio.loop = true;
 
 			// Try to auto-play (may be blocked by browser)
@@ -44,15 +44,15 @@
 <div class="mb-6 rounded-3xl border border-green-200 bg-white/80 p-4 shadow-lg backdrop-blur-xs">
 	<div class="flex items-center justify-between">
 		<div class="flex items-center space-x-3">
-			<span class="text-4xl">🎵</span>
+			<span class="text-5xl">🎵</span>
 			<div>
-				<p class="font-bold text-xl text-gray-700">태어나.mp3</p>
+				<p class="text-xl font-bold text-gray-700">태어나.mp3</p>
 			</div>
 		</div>
 
 		<button
 			onclick={togglePlay}
-			class="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-pink-400 to-blue-400 text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105"
+			class="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-pink-400 to-blue-400 text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl"
 		>
 			{#if isPlaying}
 				<span class="text-2xl">⏸️</span>
