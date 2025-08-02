@@ -5,7 +5,7 @@
 	let leaves = $state<Leaf[]>([]);
 
 	onMount(() => {
-		const emojis = [
+		const emojis: string[] = [
 			'🤱🏻',
 			'🧑🏻‍🍼',
 			'👨🏻',
@@ -25,10 +25,24 @@
 			'💰',
 			'📈',
 			'🌸',
-			'❤️'
+			'❤️',
+			'🗽',
+			'💷',
+			'💶',
+			'💰',
+			'🎥',
+			'📽️',
+			'🎹',
+			'🎸',
+			'♥️',
+			'🎁',
+			'🎗️',
+			'🎉'
 		];
+		const isMobile: boolean = window.innerWidth <= 640; // 모바일 기준
+		const count: number = isMobile ? 100 : 300;
 
-		leaves = Array.from({ length: 210 }, (_, i) => ({
+		leaves = Array.from({ length: count }, (_, i) => ({
 			id: i,
 			left: Math.random() * 100,
 			animationDelay: Math.random() * 10,
@@ -64,7 +78,7 @@
 <style>
 	@keyframes fall {
 		0% {
-			transform: translate3d(0, -210px, 0) rotate3d(0, 0, 1, 0deg);
+			transform: translateY(-210px) rotate(0deg);
 			opacity: 0.25;
 		}
 		25% {
@@ -77,7 +91,7 @@
 			opacity: 1;
 		}
 		100% {
-			transform: translate3d(0, 120vh, 0) rotate3d(0, 0, 1, 360deg);
+			transform: translateY(120vh) rotate(360deg);
 			opacity: 1;
 		}
 	}
@@ -85,16 +99,16 @@
 	@keyframes sway {
 		0%,
 		100% {
-			transform: translate3d(0, 0, 0);
+			transform: translateX(0);
 		}
 		25% {
-			transform: translate3d(-3px, 0, 0);
+			transform: translateX(-3px);
 		}
 		50% {
-			transform: translate3d(3px, 0, 0);
+			transform: translateX(3px);
 		}
 		75% {
-			transform: translate3d(-3px, 0, 0);
+			transform: translateX(-3px);
 		}
 	}
 
@@ -102,12 +116,18 @@
 		animation-name: fall;
 		animation-iteration-count: infinite;
 		animation-timing-function: ease-in-out;
-		transform: translate3d(0, -210px, 0);
+		transform: translateY(-210px);
+
+		will-change: transform, opacity;
+		contain: layout paint style;
 	}
 
 	.animate-sway {
 		animation-name: sway;
 		animation-iteration-count: infinite;
 		animation-timing-function: ease-in-out;
+
+		will-change: transform, opacity;
+		contain: layout paint style;
 	}
 </style>

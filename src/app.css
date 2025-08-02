@@ -16,19 +16,19 @@
 		rgb(222, 234, 250)
 	); /* 슬라이더 배경색 */
 	background-color: transparent; /* 트랙 배경색 */
-	border-radius: 5px; /* 슬라이더 모서리 둥글게 처리 */
+	border-radius: 1px; /* 슬라이더 모서리 둥글게 처리 */
 }
 
 /* comment 스크롤바 핸들 (움직이는 부분) */
 .comment-scrollbar::-webkit-scrollbar-thumb {
 	background-image: linear-gradient(rgb(250, 215, 235), rgb(203, 224, 250)); /* 슬라이더 배경색 */
-	border-radius: 5px; /* 슬라이더 모서리 둥글게 처리 */
+	border-radius: 1px; /* 슬라이더 모서리 둥글게 처리 */
 }
 
 /* comment 스크롤바 핸들 hover 시 */
 .comment-scrollbar::-webkit-scrollbar-thumb:hover {
 	background-image: linear-gradient(rgb(247, 205, 229), rgb(192, 215, 247)); /* 슬라이더 배경색 */
-	border-radius: 5px; /* 슬라이더 모서리 둥글게 처리 */
+	border-radius: 1px; /* 슬라이더 모서리 둥글게 처리 */
 }
 
 /* 스크롤바 전체 영역 */

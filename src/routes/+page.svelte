@@ -34,11 +34,18 @@
 	<div class="relative z-7 container mx-auto max-w-md px-4 py-8">
 		<!-- Header -->
 		<div class="mb-8 text-center">
-			<div class="rounded-3xl border border-rose-200 bg-white/80 p-6 shadow-lg backdrop-blur-xs">
-				<h1 class="mb-2 text-2xl font-bold text-rose-500">🦾 귀여운 👶🏻순돌이🍼 탄생 🦾</h1>
+			<div class="rounded-3xl border border-rose-200 bg-white/70 p-6 shadow-lg backdrop-blur-xs">
+				<p class="mb-2 hidden text-2xl font-bold text-rose-500 lg:block">
+					너무💘귀여운 🦾순돌이🍼 탄생
+				</p>
+				<p class="mb-2 text-2xl font-bold text-rose-500 lg:hidden">
+					너무💘귀여운 <br />🦾순돌이🍼 탄생
+				</p>
 				<p class="font-bold text-orange-500">2025년 9월 20일에 태어나다!</p>
 				<div class="mt-1 flex justify-center space-x-2">
-					<span class="text-xl">👨🏻👩🏻👶🏻</span>
+					<span class="text-3xl">👨🏻</span>
+					<span class="text-2xl">👩🏻</span>
+					<span class="text-xl">👶🏻</span>
 				</div>
 			</div>
 		</div>

@@ -56,11 +56,11 @@
 	}
 </script>
 
-<div class="rounded-3xl border border-purple-200 bg-white/80 p-6 shadow-lg backdrop-blur-xs">
+<div class="rounded-3xl border border-purple-200 bg-white/70 p-6 shadow-lg backdrop-blur-xs">
 	<div class="mb-6 text-center">
-		<span class="text-4xl">💌</span>
+		<span class="text-3xl">💌</span>
 		<span class="text-2xl font-bold text-purple-500">축하 메시지</span>
-		<span class="text-4xl">💌</span>
+		<span class="text-3xl">💌</span>
 	</div>
 
 	{#if isLoggedIn}
@@ -87,7 +87,7 @@
 				<textarea
 					bind:value={newComment}
 					placeholder="이제 막 세상의 빛을 만난 저에게, 따뜻한 인사와 축복의 한마디 부탁드려요!"
-					class="w-full resize-none rounded-2xl border border-rose-200 bg-white px-4 py-4 transition-colors duration-300 focus:border-rose-400 focus:outline-none"
+					class="comment-scrollbar text-md w-full cursor-pointer resize-none rounded-xs border border-rose-200 bg-white px-4 py-4 transition-colors duration-300 focus:border-rose-400 focus:outline-none"
 					rows="3"
 				></textarea>
 				<button
@@ -102,7 +102,7 @@
 	{:else}
 		<!-- Login Prompt & Form -->
 		<div class="mb-6">
-			<div class="rounded-2xl border border-pink-200 bg-gradient-to-r from-pink-50 to-blue-50 p-4">
+			<div class="rounded-xl border border-pink-200 bg-gradient-to-r from-pink-50 to-blue-50 p-4">
 				<div class="mb-3 flex justify-center">
 					<span class="text-md font-bold text-gray-800">이름과 비밀번호를 입력해주세요</span>
 				</div>
@@ -114,18 +114,18 @@
 							bind:value={loginForm.username}
 							placeholder="이름"
 							required
-							class="w-full rounded-2xl border border-pink-200 bg-white px-4 py-3 transition-colors duration-300 focus:border-pink-400 focus:outline-none"
+							class="w-full cursor-pointer rounded-xl border border-pink-200 bg-white px-4 py-3 transition-colors duration-300 focus:border-pink-400 focus:outline-none"
 						/>
 						<input
 							type="password"
 							bind:value={loginForm.password}
 							placeholder="비밀번호"
 							required
-							class="w-full rounded-2xl border border-blue-200 bg-white px-4 py-3 transition-colors duration-300 focus:border-blue-400 focus:outline-none"
+							class="w-full cursor-pointer rounded-xl border border-blue-200 bg-white px-4 py-3 transition-colors duration-300 focus:border-blue-400 focus:outline-none"
 						/>
 						<button
 							type="submit"
-							class="mt-1 w-full rounded-2xl bg-gradient-to-r from-pink-400 to-blue-400 py-3 font-bold text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl"
+							class="mt-1 w-full cursor-pointer rounded-xl bg-gradient-to-r from-pink-400 to-blue-400 py-3 font-bold text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl"
 						>
 							💕 로그인 💕
 						</button>
@@ -139,7 +139,7 @@
 	<div class="comment-scrollbar max-h-96 space-y-4 overflow-y-auto">
 		{#each comments as comment (comment.id)}
 			<div
-				class="rounded-lg border border-pink-200 bg-gradient-to-r from-pink-100 to-blue-100 p-4 shadow-sm"
+				class="rounded-xs border border-pink-200 bg-gradient-to-r from-pink-100 to-blue-100 p-4 shadow-sm"
 			>
 				<div class="mb-2 flex items-start justify-between">
 					<div class="flex items-center space-x-2">

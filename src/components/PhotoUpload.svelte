@@ -164,11 +164,11 @@
 
 <Toaster />
 <!-- 업로드 UI -->
-<div class="mb-6 rounded-3xl border border-fuchsia-200 bg-white/80 p-6 shadow-lg backdrop-blur-xs">
+<div class="mb-6 rounded-3xl border border-fuchsia-200 bg-white/70 p-6 shadow-lg backdrop-blur-xs">
 	<div class="mb-6 text-center">
-		<span class="text-4xl">📸</span>
-		<span class="text-2xl font-bold text-purple-500">소중한 순간 기록</span>
-		<span class="text-4xl">📸</span>
+		<span class="text-3xl">📸</span>
+		<span class="text-2xl font-bold text-purple-500">소중한 순간</span>
+		<span class="text-3xl">📸</span>
 	</div>
 
 	<div class="mb-6 text-center">
@@ -184,7 +184,7 @@
 			onclick={triggerFileInput}
 			class="rounded-2xl border-1 border-dashed border-fuchsia-200 bg-gradient-to-r from-pink-400 to-blue-400 text-white shadow-lg transition duration-300 hover:scale-110 hover:shadow-xl"
 		>
-			<div class="flex cursor-pointer items-center p-2">
+			<div class="flex cursor-pointer items-center px-4 py-2">
 				<span class="text-3xl">📱</span>
 				<span class="text-lg font-bold">사진 업로드</span>
 				<span class="text-3xl">📱</span>
@@ -194,10 +194,10 @@
 
 	<!-- 슬라이더 뷰 -->
 	{#if photos.length > 0}
-		<div class="relative flex flex-col items-center">
+		<div class="relative flex w-full flex-col items-center">
 			<!-- 슬라이드 컨테이너 -->
 			<div
-				class="relative flex w-full max-w-xl items-center justify-center"
+				class="relative flex w-full items-center justify-center"
 				ontouchstart={handleTouchStart}
 				ontouchend={handleTouchEnd}
 			>
@@ -209,11 +209,11 @@
 				>
 
 				<!-- 이미지 -->
-				<button onclick={openModal} class="border-none bg-transparent p-0">
+				<button onclick={openModal} class="w-full border-none bg-transparent p-0">
 					<img
 						src={photos[currentIndex].url}
 						alt={photos[currentIndex].name}
-						class="h-100 w-full cursor-pointer rounded-2xl object-cover shadow-md"
+						class="h-100 w-full cursor-pointer rounded-2xl bg-black object-contain shadow-md"
 					/>
 				</button>
 
@@ -239,7 +239,7 @@
 			{@render Pagination('small')}
 		</div>
 	{:else}
-		<div class="flex h-115 flex-col items-center justify-center text-gray-500">
+		<div class="flex h-115 w-full flex-col items-center justify-center text-gray-500">
 			<span class="mb-2 block text-5xl">👶🏻</span>
 		</div>
 	{/if}
@@ -249,7 +249,7 @@
 {#if showModal}
 	<div
 		bind:this={modalDiv}
-		class="fixed inset-0 z-21 flex items-center justify-center bg-white/70"
+		class="fixed inset-0 z-21 flex items-center justify-center bg-white/80"
 		onclick={closeModal}
 		onkeydown={closeModalUsingKeyboard}
 		role="button"
@@ -280,7 +280,7 @@
 				<img
 					src={photos[currentIndex].url}
 					alt={photos[currentIndex].name}
-					class="absolute z-22 h-full w-full cursor-pointer rounded-2xl object-cover shadow-xl"
+					class="absolute z-22 h-full w-full cursor-pointer rounded-2xl bg-black object-contain shadow-xl"
 				/>
 				<button
 					onclick={nextPhoto}
