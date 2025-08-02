@@ -14,11 +14,12 @@ export default defineConfig({
 			outdir: './src/lib/paraglide'
 		})
 	],
-	// host 및 port 수정
+	// npm run dev -> host 및 port 수정
 	server: {
 		host: '0.0.0.0',
 		port: 3000
 	},
+	// npm run preview -> host 및 port 수정
 	preview: {
 		host: '0.0.0.0',
 		port: 3000
