@@ -18,6 +18,8 @@
 				date: new Date(comment.date)
 			}));
 		}
+		return () => {
+    	};
 	});
 
 	$effect(() => {
@@ -47,11 +49,18 @@
 		localStorage.setItem('celebrationComments', JSON.stringify(comments));
 	}
 
-	function submitLogin(e: SubmitEvent): void {
-		e.preventDefault();
+	function submitLogin(event: SubmitEvent): void {
+		event.preventDefault();
 		if (loginForm.username && loginForm.password) {
 			handleLogin(loginForm.username);
 			loginForm = { username: '', password: '' };
+		}
+	}
+
+	function handleTextareaKeydown(event: KeyboardEvent) {
+		if (event.key === 'Enter' && !event.shiftKey) {
+			event.preventDefault(); // 줄바꿈 방지
+			addComment();
 		}
 	}
 </script>
@@ -59,7 +68,7 @@
 <div class="rounded-3xl border border-purple-200 bg-white/70 p-6 shadow-lg backdrop-blur-xs">
 	<div class="mb-6 text-center">
 		<span class="text-3xl">💌</span>
-		<span class="text-2xl font-bold text-purple-500">축하 메시지</span>
+		<span class="text-2xl font-bold text-purple-400">축하 메시지</span>
 		<span class="text-3xl">💌</span>
 	</div>
 
@@ -89,6 +98,7 @@
 					placeholder="이제 막 세상의 빛을 만난 저에게, 따뜻한 인사와 축복의 한마디 부탁드려요!"
 					class="comment-scrollbar text-md w-full cursor-pointer resize-none rounded-xs border border-rose-200 bg-white px-4 py-4 transition-colors duration-300 focus:border-rose-400 focus:outline-none"
 					rows="3"
+					onkeydown={handleTextareaKeydown}
 				></textarea>
 				<button
 					onclick={addComment}

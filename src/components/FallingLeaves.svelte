@@ -50,6 +50,8 @@
 			swayDuration: 0.5 + Math.random() * 1,
 			emoji: emojis[Math.floor(Math.random() * emojis.length)]
 		}));
+		return () => {
+    	};
 	});
 </script>
 

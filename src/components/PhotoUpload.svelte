@@ -2,6 +2,7 @@
 	import type { Photo } from '../types/types';
 	import toast, { Toaster } from 'svelte-5-french-toast';
 	import { onMount } from 'svelte';
+	import { scale, blur, fade, fly, slide } from 'svelte/transition';
 
 	let photos = $state<Photo[]>([]);
 	let fileInput: HTMLInputElement;
@@ -146,12 +147,13 @@
 		{#each photos as photo, index (photo.id)}
 			<!-- 템플릿 리터럴 사용(백틱 ` 와 함께) -->
 			<button
+				transition:fade={{ duration: 210 }}
 				class={`cursor-pointer rounded-full font-bold transition ${
 					size === 'small' ? 'h-6 w-6 text-sm' : 'h-12 w-12 text-lg'
 				} ${
 					index === currentIndex
-						? 'bg-sky-500 text-white'
-						: 'bg-sky-300 text-white opacity-50 hover:bg-sky-500'
+						? 'bg-fuchsia-400 text-white'
+						: 'bg-fuchsia-300 text-white opacity-50 hover:bg-fuchsia-400'
 				}`}
 				onclick={() => (currentIndex = index)}
 				aria-label={`Go to photo ${index + 1}`}
@@ -167,11 +169,12 @@
 <div class="mb-6 rounded-3xl border border-fuchsia-200 bg-white/70 p-6 shadow-lg backdrop-blur-xs">
 	<div class="mb-6 text-center">
 		<span class="text-3xl">📸</span>
-		<span class="text-2xl font-bold text-purple-500">소중한 순간</span>
+		<span class="text-2xl font-bold text-purple-400">소중한 순간</span>
 		<span class="text-3xl">📸</span>
 	</div>
 
-	<div class="mb-6 text-center">
+	<div class="
+		mb-6 text-center">
 		<input
 			bind:this={fileInput}
 			type="file"
@@ -194,33 +197,38 @@
 
 	<!-- 슬라이더 뷰 -->
 	{#if photos.length > 0}
-		<div class="relative flex w-full flex-col items-center">
+		<div 
+		transition:blur={{ duration: 1221 }} 
+		class="relative flex w-full flex-col items-center">
 			<!-- 슬라이드 컨테이너 -->
-			<div
-				class="relative flex w-full items-center justify-center"
+			<div class="relative flex w-full items-center justify-center"
 				ontouchstart={handleTouchStart}
 				ontouchend={handleTouchEnd}
 			>
 				<!-- 왼쪽 화살표 -->
 				<button
 					onclick={prevPhoto}
-					class="absolute left-0 z-14 cursor-pointer p-2 text-5xl text-red-300 transition duration-300 hover:scale-110 hover:text-red-500"
+					class="absolute left-0 z-14 cursor-pointer p-2 text-5xl text-fuchsia-400 transition duration-300 hover:scale-110 hover:text-fuchsia-500"
 					>‹</button
 				>
 
 				<!-- 이미지 -->
+				<!-- https://svelte.dev/docs/svelte/key 참고 -->
+				{#key photos[currentIndex].id}
 				<button onclick={openModal} class="w-full border-none bg-transparent p-0">
 					<img
+						transition:fade={{ duration: 210}} 
 						src={photos[currentIndex].url}
 						alt={photos[currentIndex].name}
 						class="h-100 w-full cursor-pointer rounded-2xl bg-black object-contain shadow-md"
 					/>
 				</button>
+				{/key}
 
 				<!-- 오른쪽 화살표 -->
 				<button
 					onclick={nextPhoto}
-					class="absolute right-0 z-14 cursor-pointer p-2 text-5xl text-red-300 transition duration-300 hover:scale-110 hover:text-red-500"
+					class="absolute right-0 z-14 cursor-pointer p-2 text-5xl text-fuchsia-400 transition duration-300 hover:scale-110 hover:text-fuchsia-500"
 					>›</button
 				>
 
@@ -248,8 +256,9 @@
 <!-- 이미지 모달 -->
 {#if showModal}
 	<div
+		transition:scale={{ duration: 1221 }}
 		bind:this={modalDiv}
-		class="fixed inset-0 z-21 flex items-center justify-center bg-white/80"
+		class="fixed inset-0 z-21 flex items-center justify-center bg-white/90"
 		onclick={closeModal}
 		onkeydown={closeModalUsingKeyboard}
 		role="button"
@@ -267,24 +276,36 @@
 			aria-label="Prevent Close modal"
 		>
 			<div class="relative z-22 flex h-full w-full items-center justify-center">
+
+				<button
+					onclick={() => removePhoto(photos[currentIndex].id)}
+					class="absolute top-6 right-18 z-23 cursor-pointer rounded-full text-4xl shadow-md transition duration-300 hover:scale-110"
+				>
+					🗑️
+				</button>
+				
 				<button
 					onclick={closeModal}
-					class="absolute top-1 right-4 z-23 cursor-pointer text-7xl text-red-300 transition duration-300 hover:scale-110 hover:text-red-500"
+					class="absolute top-1 right-4 z-23 cursor-pointer text-7xl text-fuchsia-400 transition duration-300 hover:scale-110 hover:text-fuchsia-500"
 					>×</button
 				>
 				<button
 					onclick={prevPhoto}
-					class="absolute left-4 z-23 cursor-pointer text-7xl text-red-300 transition duration-300 hover:scale-110 hover:text-red-500"
+					class="absolute left-4 z-23 cursor-pointer text-7xl text-fuchsia-400 transition duration-300 hover:scale-110 hover:text-fuchsia-500"
 					>‹</button
 				>
+				{#key photos[currentIndex].id}
 				<img
+					transition:fade={{ duration: 500}} 
 					src={photos[currentIndex].url}
 					alt={photos[currentIndex].name}
 					class="absolute z-22 h-full w-full cursor-pointer rounded-2xl bg-black object-contain shadow-xl"
 				/>
+				{/key}
+				
 				<button
 					onclick={nextPhoto}
-					class="absolute right-4 z-23 cursor-pointer text-7xl text-red-300 transition duration-300 hover:scale-110 hover:text-red-500"
+					class="absolute right-4 z-23 cursor-pointer text-7xl text-fuchsia-400 transition duration-300 hover:scale-110 hover:text-fuchsia-500"
 					>›</button
 				>
 			</div>

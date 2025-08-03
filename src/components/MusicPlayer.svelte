@@ -1,60 +1,60 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { Rewind, Play, Pause, Square, Volume2, VolumeOff, ChevronsUp } from '@lucide/svelte';
+	import { StepBack, Play, Pause, SkipForward, Volume2, VolumeOff, ChevronsUp, Shuffle, Repeat, Repeat1  } from '@lucide/svelte';
 
-	/* 
-	ToDO 목록
-    1. 소리 크기 -> 마우스 스크롤로 조정 가능하게
-	2. 재생 빠르게 -> 마우스 스크롤로 조정가능하게
-	3. 플레이 바 -> 마우스 스크롤로 조정가능하게, 키보드로 조정 가능하게
-	4. 댓글 enter key 로 가능하게 
-	5. 서버로 이미지 업로드 하기 - 단 관리자일떄만 가능하게 -> 고민해야함
-	6. 댓글 이름, 비밀번호, 내용 한번에 쳐서 서버에 업로드 --> 수정은 비밀번호만 치면 갱신가능하게
-	*/
+	// routes/page.svelte 로 부터 
+	let { isPlaying = $bindable(false)} = $props();
 
 	let audio: HTMLAudioElement;
-	let isPlaying = $state<boolean>(false);
-	let isLoaded = false;
-	let interacted = false;
+
 	let currentTime = $state<number>(0);
 	let duration = $state<number>(0);
-	let isDragging = $state<boolean>(false);
+	let isDragging = false;
 	let progressBar: HTMLDivElement;
 
 	let volume = $state<number>(0.5);
-	let tempVolume = $state<number>(0.5); // 음소거 해제 시 원래 음량으로 복구하기 위한 임시 변수
+	let tempVolume = 0.5; // 음소거 해제 시 원래 음량으로 복구하기 위한 임시 변수
 	let isMuted = $state<boolean>(false); // 음소거 상태 변수
 	let playbackRate = $state<number>(1.0);
+	
 
-	function tryAutoPlay() {
-		if (audio && !isPlaying && isLoaded && !interacted) {
+    // let currentTrackIndex = $state(0);
+    // let currentTrack = $derived(musicList[currentTrackIndex]);
+    $effect(() => {
+		duration = audio?.duration || 0;
+		if (audio && isPlaying) {
+			audio.volume = volume;
+			audio.playbackRate = playbackRate
+			audio
+				.play()
+				.then(() => {
+					console.warn("재생 성공");
+				})
+				.catch((err: Error) => {
+					console.warn("재생 실패:", err.message);
+				});
+		}
+    });
+
+	function handleTimeUpdate() {
+		if (isPlaying && !isDragging) {
+		currentTime = audio.currentTime;
+		}
+  	}
+
+	function handleLoadedData() {
+		duration = audio?.duration || 0;
+		if (audio && !isPlaying) {
+			audio.volume = volume;
+			audio.playbackRate = playbackRate;
 			audio
 				.play()
 				.then(() => {
 					isPlaying = true;
-					interacted = true;
-					removeInteractionListeners();
 				})
 				.catch((err: Error) => {
 					console.warn('재생 실패:', err.message);
 				});
 		}
-	}
-
-	function handleLoadedData() {
-		isLoaded = true;
-		duration = audio?.duration || 0;
-		if (audio) {
-			audio.volume = volume;
-			audio.playbackRate = playbackRate;
-		}
-		tryAutoPlay();
-	}
-
-	function removeInteractionListeners() {
-		document.removeEventListener('click', handleLoadedData);
-		document.removeEventListener('scroll', handleLoadedData);
-		document.removeEventListener('keydown', handleLoadedData);
 	}
 
 	function handleSeek(event: MouseEvent) {
@@ -103,27 +103,6 @@
 	function stopDrag() {
 		isDragging = false;
 	}
-
-	onMount(() => {
-		document.addEventListener('click', handleLoadedData);
-		document.addEventListener('scroll', handleLoadedData);
-		document.addEventListener('keydown', handleLoadedData);
-
-		document.addEventListener('mousemove', handleSeek);
-		document.addEventListener('mouseup', stopDrag);
-
-		setInterval(() => {
-			if (audio && isPlaying && !isDragging) {
-				currentTime = audio.currentTime;
-			}
-		}, 500);
-
-		return () => {
-			document.removeEventListener('mousemove', handleSeek);
-			document.removeEventListener('mouseup', stopDrag);
-			removeInteractionListeners();
-		};
-	});
 
 	function togglePlay(): void {
 		if (!audio) return;
@@ -177,18 +156,52 @@
 		}
 		isMuted = !isMuted;
 	}
+
+	// 키보드 이벤트 핸들러 추가
+    function handleKeyDown(event: KeyboardEvent) {
+        if (!audio) return;
+
+        const seekAmount = 5; // 5초씩 이동
+        let newTime = audio.currentTime;
+
+        switch (event.key) {
+            case 'ArrowLeft':
+                newTime -= seekAmount;
+                break;
+            case 'ArrowRight':
+                newTime += seekAmount;
+                break;
+            default:
+                return;
+        }
+
+        // 재생 시간이 유효한 범위에 있는지 확인하고 설정
+        if (newTime >= 0 && newTime <= duration) {
+            audio.currentTime = newTime;
+            currentTime = newTime;
+        } else if (newTime < 0) {
+            audio.currentTime = 0;
+            currentTime = 0;
+        } else if (newTime > duration) {
+            audio.currentTime = duration;
+            currentTime = duration;
+        }
+    }
 </script>
 
 <div
 	class="mx-auto mb-6 max-w-xl rounded-3xl border border-green-200 bg-white/70 p-6 shadow-2xl backdrop-blur-md"
 >
-	<audio bind:this={audio} src="/촛불하나.mp3" onloadeddata={handleLoadedData} loop playsinline
+	<audio bind:this={audio} 
+		   src="/music/달리기.mp3"
+		   ontimeupdate={handleTimeUpdate}
+		   onloadeddata={handleLoadedData} loop playsinline
 	></audio>
 	<div class="flex items-center justify-center sm:justify-between">
 		<div class="flex flex-col items-center justify-center sm:flex-row">
-			<img src="/촛불하나.jpg" alt="음악 아이콘" class="mr-4 h-16 w-16 rounded-md" />
+			<img src="/thumbnail/촛불하나.jpg" alt="음악 아이콘" class="mr-4 h-16 w-16 rounded-md" />
 			<div>
-				<p class="mr-4 hidden text-lg font-bold text-gray-700 sm:mr-0 sm:block">촛불하나</p>
+				<p class="mr-4 hidden text-lg font-bold text-amber-500 sm:mr-0 sm:block">촛불하나</p>
 				<p class="hidden text-lg font-semibold text-gray-500/70 sm:block">god</p>
 			</div>
 		</div>
@@ -234,6 +247,9 @@
 		bind:this={progressBar}
 		class="mt-4 h-3 w-full cursor-pointer overflow-hidden rounded-full bg-gray-200"
 		onmousedown={startDrag}
+		onmouseup={stopDrag}
+		onmousemove={handleSeek}
+		onkeydown={handleKeyDown}
 		role="slider"
 		aria-label="Audio play time"
 		aria-valuemin="0"
@@ -253,7 +269,7 @@
 
 	<div class="flex justify-center space-x-9">
 		<button onclick={resetAudio} class="cursor-pointer transition duration-200 hover:scale-120">
-			<Rewind size="32" strokeWidth="3" />
+			<StepBack size="32" strokeWidth="3" />
 		</button>
 
 		<button onclick={togglePlay} class="cursor-pointer transition duration-200 hover:scale-120">
@@ -265,7 +281,7 @@
 		</button>
 
 		<button onclick={stopAudio} class="cursor-pointer transition duration-200 hover:scale-120">
-			<Square size="32" strokeWidth="3" />
+			<SkipForward  size="32" strokeWidth="3" />
 		</button>
 	</div>
 </div>

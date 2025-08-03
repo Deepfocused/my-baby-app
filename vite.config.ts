@@ -17,11 +17,11 @@ export default defineConfig({
 	// npm run dev -> host 및 port 수정
 	server: {
 		host: '0.0.0.0',
-		port: 3000
+		port: 8021
 	},
 	// npm run preview -> host 및 port 수정
 	preview: {
 		host: '0.0.0.0',
-		port: 3000
+		port: 8021
 	}
 });
