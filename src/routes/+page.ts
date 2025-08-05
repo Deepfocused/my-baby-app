@@ -6,12 +6,14 @@ export const load: PageLoad = async () => {
     const thumbnailFiles = import.meta.glob('/static/thumbnail/*.jpg', { eager: true, as: 'url' });
 
     const musicList = Object.keys(musicFiles).map((path) => {
-        const title = path.split('/').pop()?.replace('.mp3', '') || 'Unknown Title';
-        const thumbnail = thumbnailFiles[`/static/thumbnail/${title}.jpg`] || '/static/thumbnail/default.jpg';
+        const name = path.split('/').pop()?.replace('.mp3', '') || 'Unknown';
+        const title = name?.split('-')[0];
+        const artist = name?.split('-')[1];
+        const thumbnail = thumbnailFiles[`/static/thumbnail/${artist}.jpg`] || '/static/thumbnail/default.jpg';
 
         return {
-            title: title.replace('-', ' '), 
-            artist: 'Unknown Artist',
+            title: title, 
+            artist: artist,
             src: musicFiles[path],
             thumbnail: thumbnail,
         };

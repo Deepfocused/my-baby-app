@@ -2,7 +2,7 @@
 	import type { Photo } from '../types/types';
 	import toast, { Toaster } from 'svelte-5-french-toast';
 	import { onMount } from 'svelte';
-	import { scale, blur, fade, fly, slide } from 'svelte/transition';
+	import { scale, blur, fade} from 'svelte/transition';
 
 	let photos = $state<Photo[]>([]);
 	let fileInput: HTMLInputElement;

@@ -2,7 +2,8 @@
 	import { StepBack, Play, Pause, SkipForward, Volume2, VolumeOff, ChevronsUp, Shuffle, Repeat, Repeat1  } from '@lucide/svelte';
 
 	// routes/page.svelte 로 부터 
-	let { isPlaying = $bindable(false)} = $props();
+	let { isPlaying = $bindable(false), data } = $props();
+  	const musicList = data.musicList;
 
 	let audio: HTMLAudioElement;
 
@@ -16,9 +17,9 @@
 	let isMuted = $state<boolean>(false); // 음소거 상태 변수
 	let playbackRate = $state<number>(1.0);
 	
-
-    // let currentTrackIndex = $state(0);
-    // let currentTrack = $derived(musicList[currentTrackIndex]);
+    let currentTrackIndex = $state(0);
+    let currentTrack = $derived(musicList[currentTrackIndex]);
+	
     $effect(() => {
 		duration = audio?.duration || 0;
 		if (audio && isPlaying) {

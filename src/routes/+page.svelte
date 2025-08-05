@@ -4,8 +4,11 @@
   import CommentSection from '../components/CommentSection.svelte';
   import MusicPlayer from '../components/MusicPlayer.svelte';
   import FallingLeaves from '../components/FallingLeaves.svelte';
+  import type { PageProps } from './$types';
   import { scale } from 'svelte/transition';
 
+  // from +page.ts
+  let { data= $bindable() }: PageProps = $props();
   let isLoggedIn = $state<boolean>(false);
   let currentUser = $state<string>('');
   let isModalOpen = $state<boolean>(true);
@@ -77,7 +80,7 @@
     </header>
 
     <section>
-      <MusicPlayer bind:isPlaying={isPlaying} />
+      <MusicPlayer bind:isPlaying={isPlaying} data />
     </section>
 
     <section>
