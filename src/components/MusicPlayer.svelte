@@ -2,8 +2,7 @@
 	import { StepBack, Play, Pause, SkipForward, Volume2, VolumeOff, ChevronsUp, Shuffle, Repeat, Repeat1  } from '@lucide/svelte';
 
 	// routes/page.svelte 로 부터 
-	let { isPlaying = $bindable(false), data } = $props();
-  	const musicList = data.musicList;
+	let { isPlaying = $bindable(false), musicList } = $props();
 
 	let audio: HTMLAudioElement;
 

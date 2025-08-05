@@ -8,7 +8,9 @@
   import { scale } from 'svelte/transition';
 
   // from +page.ts
-  let { data= $bindable() }: PageProps = $props();
+  let { data }: PageProps = $props();
+  const musicList = data.musicList;
+
   let isLoggedIn = $state<boolean>(false);
   let currentUser = $state<string>('');
   let isModalOpen = $state<boolean>(true);
@@ -80,7 +82,7 @@
     </header>
 
     <section>
-      <MusicPlayer bind:isPlaying={isPlaying} data />
+      <MusicPlayer bind:isPlaying={isPlaying} musicList={musicList} />
     </section>
 
     <section>

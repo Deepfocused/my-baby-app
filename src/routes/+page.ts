@@ -2,6 +2,7 @@
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async () => {
+    // 1. import.meta.glob 찾아보기
     const musicFiles = import.meta.glob('/static/music/*.mp3', { eager: true, as: 'url' });
     const thumbnailFiles = import.meta.glob('/static/thumbnail/*.jpg', { eager: true, as: 'url' });
 
