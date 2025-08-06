@@ -219,7 +219,7 @@
 		<div class="flex flex-col items-center justify-center sm:flex-row">
 			<img src={currentTrack.thumbnail} alt="가수 사진" class="mr-4 h-16 w-16 rounded-md" />
 			<div>
-				<p class="mr-4 hidden text-lg font-bold text-amber-500 sm:mr-0 sm:block">
+				<p class="mr-4 hidden text-lg font-bold text-orange-400 sm:mr-0 sm:block">
 					{currentTrack.title}
 				</p>
 				<p class="hidden text-lg font-semibold text-gray-500/70 sm:block">{currentTrack.artist}</p>
@@ -287,7 +287,10 @@
 		<div class="text-xs text-gray-600">-{formatTime(duration - currentTime)}</div>
 	</div>
 
-	<div class="flex justify-center space-x-9">
+	<div class="flex justify-center space-x-7">
+		<button onclick={nextPlay} class="cursor-pointer transition duration-200 hover:scale-120">
+			<Repeat color="#f91075" size="21" strokeWidth="3" />
+		</button>
 		<button onclick={previousPlay} class="cursor-pointer transition duration-200 hover:scale-120">
 			<StepBack size="32" strokeWidth="3" />
 		</button>
@@ -302,6 +305,10 @@
 
 		<button onclick={nextPlay} class="cursor-pointer transition duration-200 hover:scale-120">
 			<SkipForward size="32" strokeWidth="3" />
+		</button>
+
+		<button onclick={nextPlay} class="cursor-pointer transition duration-200 hover:scale-120">
+			<Shuffle color="#f91075" size="21" strokeWidth="3" />
 		</button>
 	</div>
 </div>
