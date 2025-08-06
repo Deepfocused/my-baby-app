@@ -82,7 +82,7 @@
     </header>
 
     <section>
-      <MusicPlayer bind:isPlaying={isPlaying} musicList={musicList} />
+      <MusicPlayer bind:value={isPlaying} musicList={musicList} />
     </section>
 
     <section>
