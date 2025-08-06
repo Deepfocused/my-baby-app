@@ -2,7 +2,7 @@
 	import { StepBack, Play, Pause, SkipForward, Volume2, VolumeOff, ChevronsUp, Shuffle, Repeat, Repeat1  } from '@lucide/svelte';
 
 	// routes/page.svelte 로 부터 
-	let { isPlaying = $bindable(false), musicList } = $props();
+	let { value = $bindable(false), musicList } = $props();
 
 	let audio: HTMLAudioElement;
 
@@ -21,7 +21,7 @@
 	
     $effect(() => {
 		duration = audio?.duration || 0;
-		if (audio && isPlaying) {
+		if (audio && value) {
 			audio.volume = volume;
 			audio.playbackRate = playbackRate
 			audio
@@ -36,20 +36,20 @@
     });
 
 	function handleTimeUpdate() {
-		if (isPlaying && !isDragging) {
+		if (value && !isDragging) {
 		currentTime = audio.currentTime;
 		}
   	}
 
 	function handleLoadedData() {
 		duration = audio?.duration || 0;
-		if (audio && !isPlaying) {
+		if (audio && !value) {
 			audio.volume = volume;
 			audio.playbackRate = playbackRate;
 			audio
 				.play()
 				.then(() => {
-					isPlaying = true;
+					value = true;
 				})
 				.catch((err: Error) => {
 					console.warn('재생 실패:', err.message);
@@ -106,11 +106,11 @@
 
 	function togglePlay(): void {
 		if (!audio) return;
-		if (isPlaying) {
+		if (value) {
 			audio.pause();
-			isPlaying = false;
+			value = false;
 		} else {
-			audio.play().then(() => (isPlaying = true));
+			audio.play().then(() => (value = true));
 		}
 	}
 
@@ -119,7 +119,7 @@
 			audio.currentTime = 0;
 			currentTime = 0;
 			audio.play();
-			isPlaying = true;
+			value = true;
 		}
 	}
 
@@ -128,7 +128,7 @@
 			audio.pause();
 			audio.currentTime = 0;
 			currentTime = 0;
-			isPlaying = false;
+			value = false;
 		}
 	}
 
@@ -273,7 +273,7 @@
 		</button>
 
 		<button onclick={togglePlay} class="cursor-pointer transition duration-200 hover:scale-120">
-			{#if isPlaying}
+			{#if value}
 				<Pause size="32" strokeWidth="3" />
 			{:else}
 				<Play size="32" strokeWidth="3" />
