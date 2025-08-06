@@ -18,7 +18,6 @@
 		"lint": "prettier --check . && eslint ."
 	},
 	"dependencies": {
-		"@inlang/paraglide-js": "^2.0.0",
 		"@lucide/svelte": "^0.536.0"
 	},
 	"devDependencies": {

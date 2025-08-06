@@ -33,3 +33,10 @@ export interface Leaf {
 	swayDuration: number;
 	emoji: string;
 }
+
+export interface MusicItem {
+	title: string;
+	artist: string;
+	src: string;
+	thumbnail: string;
+}

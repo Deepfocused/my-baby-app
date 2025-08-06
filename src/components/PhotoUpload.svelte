@@ -2,7 +2,7 @@
 	import type { Photo } from '../types/types';
 	import toast, { Toaster } from 'svelte-5-french-toast';
 	import { onMount } from 'svelte';
-	import { scale, blur, fade} from 'svelte/transition';
+	import { scale, blur, fade } from 'svelte/transition';
 
 	let photos = $state<Photo[]>([]);
 	let fileInput: HTMLInputElement;
@@ -173,8 +173,10 @@
 		<span class="text-3xl">📸</span>
 	</div>
 
-	<div class="
-		mb-6 text-center">
+	<div
+		class="
+		mb-6 text-center"
+	>
 		<input
 			bind:this={fileInput}
 			type="file"
@@ -197,11 +199,10 @@
 
 	<!-- 슬라이더 뷰 -->
 	{#if photos.length > 0}
-		<div 
-		transition:blur={{ duration: 1221 }} 
-		class="relative flex w-full flex-col items-center">
+		<div transition:blur={{ duration: 1221 }} class="relative flex w-full flex-col items-center">
 			<!-- 슬라이드 컨테이너 -->
-			<div class="relative flex w-full items-center justify-center"
+			<div
+				class="relative flex w-full items-center justify-center"
 				ontouchstart={handleTouchStart}
 				ontouchend={handleTouchEnd}
 			>
@@ -215,14 +216,14 @@
 				<!-- 이미지 -->
 				<!-- https://svelte.dev/docs/svelte/key 참고 -->
 				{#key photos[currentIndex].id}
-				<button onclick={openModal} class="w-full border-none bg-transparent p-0">
-					<img
-						transition:fade={{ duration: 210}} 
-						src={photos[currentIndex].url}
-						alt={photos[currentIndex].name}
-						class="h-100 w-full cursor-pointer rounded-2xl bg-black object-contain shadow-md"
-					/>
-				</button>
+					<button onclick={openModal} class="w-full border-none bg-transparent p-0">
+						<img
+							transition:fade={{ duration: 210 }}
+							src={photos[currentIndex].url}
+							alt={photos[currentIndex].name}
+							class="h-100 w-full cursor-pointer rounded-2xl bg-black object-contain shadow-md"
+						/>
+					</button>
 				{/key}
 
 				<!-- 오른쪽 화살표 -->
@@ -276,14 +277,13 @@
 			aria-label="Prevent Close modal"
 		>
 			<div class="relative z-22 flex h-full w-full items-center justify-center">
-
 				<button
 					onclick={() => removePhoto(photos[currentIndex].id)}
 					class="absolute top-6 right-18 z-23 cursor-pointer rounded-full text-4xl shadow-md transition duration-300 hover:scale-110"
 				>
 					🗑️
 				</button>
-				
+
 				<button
 					onclick={closeModal}
 					class="absolute top-1 right-4 z-23 cursor-pointer text-7xl text-fuchsia-400 transition duration-300 hover:scale-110 hover:text-fuchsia-500"
@@ -295,14 +295,14 @@
 					>‹</button
 				>
 				{#key photos[currentIndex].id}
-				<img
-					transition:fade={{ duration: 500}} 
-					src={photos[currentIndex].url}
-					alt={photos[currentIndex].name}
-					class="absolute z-22 h-full w-full cursor-pointer rounded-2xl bg-black object-contain shadow-xl"
-				/>
+					<img
+						transition:fade={{ duration: 500 }}
+						src={photos[currentIndex].url}
+						alt={photos[currentIndex].name}
+						class="absolute z-22 h-full w-full cursor-pointer rounded-2xl bg-black object-contain shadow-xl"
+					/>
 				{/key}
-				
+
 				<button
 					onclick={nextPhoto}
 					class="absolute right-4 z-23 cursor-pointer text-7xl text-fuchsia-400 transition duration-300 hover:scale-110 hover:text-fuchsia-500"

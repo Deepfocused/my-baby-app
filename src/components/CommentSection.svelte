@@ -18,8 +18,7 @@
 				date: new Date(comment.date)
 			}));
 		}
-		return () => {
-    	};
+		return () => {};
 	});
 
 	$effect(() => {

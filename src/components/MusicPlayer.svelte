@@ -1,8 +1,24 @@
 <script lang="ts">
-	import { StepBack, Play, Pause, SkipForward, Volume2, VolumeOff, ChevronsUp, Shuffle, Repeat, Repeat1  } from '@lucide/svelte';
-
-	// routes/page.svelte 로 부터 
-	let { value = $bindable(false), musicList } = $props();
+	import {
+		StepBack,
+		Play,
+		Pause,
+		SkipForward,
+		Volume2,
+		VolumeOff,
+		ChevronsUp,
+		Shuffle,
+		Repeat,
+		Repeat1
+	} from '@lucide/svelte';
+	import type { MusicItem } from '../types/types';
+	// routes/page.svelte 로 부터
+	let {
+		value: isPlaying = $bindable(false),
+		musicList
+	}: { value: boolean; musicList: MusicItem[] } = $props();
+	let currentTrackIndex = $state<number>(0);
+	let currentTrack = $derived(musicList[currentTrackIndex]);
 
 	let audio: HTMLAudioElement;
 
@@ -15,41 +31,38 @@
 	let tempVolume = 0.5; // 음소거 해제 시 원래 음량으로 복구하기 위한 임시 변수
 	let isMuted = $state<boolean>(false); // 음소거 상태 변수
 	let playbackRate = $state<number>(1.0);
-	
-    let currentTrackIndex = $state(0);
-    let currentTrack = $derived(musicList[currentTrackIndex]);
-	
-    $effect(() => {
-		duration = audio?.duration || 0;
-		if (audio && value) {
-			audio.volume = volume;
-			audio.playbackRate = playbackRate
-			audio
-				.play()
-				.then(() => {
-					console.warn("재생 성공");
-				})
-				.catch((err: Error) => {
-					console.warn("재생 실패:", err.message);
-				});
-		}
-    });
 
-	function handleTimeUpdate() {
-		if (value && !isDragging) {
-		currentTime = audio.currentTime;
-		}
-  	}
-
-	function handleLoadedData() {
+	$effect(() => {
 		duration = audio?.duration || 0;
-		if (audio && !value) {
+		if (audio && isPlaying) {
 			audio.volume = volume;
 			audio.playbackRate = playbackRate;
 			audio
 				.play()
 				.then(() => {
-					value = true;
+					console.warn('재생 성공');
+				})
+				.catch((err: Error) => {
+					console.warn('재생 실패:', err.message);
+				});
+		}
+	});
+
+	function handleTimeUpdate() {
+		if (isPlaying && !isDragging) {
+			currentTime = audio?.currentTime;
+		}
+	}
+
+	function handleLoadedData() {
+		duration = audio?.duration || 0;
+		if (audio && !isPlaying) {
+			audio.volume = volume;
+			audio.playbackRate = playbackRate;
+			audio
+				.play()
+				.then(() => {
+					isPlaying = true;
 				})
 				.catch((err: Error) => {
 					console.warn('재생 실패:', err.message);
@@ -104,34 +117,6 @@
 		isDragging = false;
 	}
 
-	function togglePlay(): void {
-		if (!audio) return;
-		if (value) {
-			audio.pause();
-			value = false;
-		} else {
-			audio.play().then(() => (value = true));
-		}
-	}
-
-	function resetAudio() {
-		if (audio) {
-			audio.currentTime = 0;
-			currentTime = 0;
-			audio.play();
-			value = true;
-		}
-	}
-
-	function stopAudio() {
-		if (audio) {
-			audio.pause();
-			audio.currentTime = 0;
-			currentTime = 0;
-			value = false;
-		}
-	}
-
 	function formatTime(seconds: number): string {
 		const min = Math.floor(seconds / 60);
 		const sec = Math.floor(seconds % 60);
@@ -158,51 +143,86 @@
 	}
 
 	// 키보드 이벤트 핸들러 추가
-    function handleKeyDown(event: KeyboardEvent) {
-        if (!audio) return;
+	function handleKeyDown(event: KeyboardEvent) {
+		if (!audio) return;
 
-        const seekAmount = 5; // 5초씩 이동
-        let newTime = audio.currentTime;
+		const seekAmount = 5; // 5초씩 이동
+		let newTime = audio?.currentTime;
 
-        switch (event.key) {
-            case 'ArrowLeft':
-                newTime -= seekAmount;
-                break;
-            case 'ArrowRight':
-                newTime += seekAmount;
-                break;
-            default:
-                return;
-        }
+		switch (event.key) {
+			case 'ArrowLeft':
+				newTime -= seekAmount;
+				break;
+			case 'ArrowRight':
+				newTime += seekAmount;
+				break;
+			default:
+				return;
+		}
 
-        // 재생 시간이 유효한 범위에 있는지 확인하고 설정
-        if (newTime >= 0 && newTime <= duration) {
-            audio.currentTime = newTime;
-            currentTime = newTime;
-        } else if (newTime < 0) {
-            audio.currentTime = 0;
-            currentTime = 0;
-        } else if (newTime > duration) {
-            audio.currentTime = duration;
-            currentTime = duration;
-        }
-    }
+		// 재생 시간이 유효한 범위에 있는지 확인하고 설정
+		if (newTime >= 0 && newTime <= duration) {
+			audio.currentTime = newTime;
+			currentTime = newTime;
+		} else if (newTime < 0) {
+			audio.currentTime = 0;
+			currentTime = 0;
+		} else if (newTime > duration) {
+			audio.currentTime = duration;
+			currentTime = duration;
+		}
+	}
+
+	function togglePlay(): void {
+		if (!audio) return;
+		if (isPlaying) {
+			audio?.pause();
+			isPlaying = false;
+		} else {
+			audio?.play().then(() => (isPlaying = true));
+		}
+	}
+
+	function previousPlay() {
+		if (currentTrackIndex >= 0) {
+			isPlaying = false;
+			currentTrackIndex = (currentTrackIndex - 1 + musicList.length) % musicList.length;
+			audio.currentTime = 0;
+			currentTime = 0;
+			audio?.play().then(() => (isPlaying = true));
+		}
+	}
+
+	function nextPlay() {
+		if (currentTrackIndex <= musicList.length - 1) {
+			isPlaying = false;
+			currentTrackIndex = (currentTrackIndex + 1) % musicList.length;
+			audio.currentTime = 0;
+			currentTime = 0;
+			audio?.play().then(() => (isPlaying = true));
+		}
+	}
 </script>
 
 <div
 	class="mx-auto mb-6 max-w-xl rounded-3xl border border-green-200 bg-white/70 p-6 shadow-2xl backdrop-blur-md"
 >
-	<audio bind:this={audio} 
-		   src="/music/달리기.mp3"
-		   ontimeupdate={handleTimeUpdate}
-		   onloadeddata={handleLoadedData} loop playsinline
+	<audio
+		bind:this={audio}
+		src={currentTrack.src}
+		ontimeupdate={handleTimeUpdate}
+		onloadeddata={handleLoadedData}
+		loop
+		playsinline
 	></audio>
 	<div class="flex items-center justify-center sm:justify-between">
 		<div class="flex flex-col items-center justify-center sm:flex-row">
-			<img src="/thumbnail/촛불하나.jpg" alt="음악 아이콘" class="mr-4 h-16 w-16 rounded-md" />
+			<img src={currentTrack.thumbnail} alt="가수 사진" class="mr-4 h-16 w-16 rounded-md" />
 			<div>
-				<p class="mr-4 hidden text-lg font-bold text-amber-500 sm:mr-0 sm:block">촛불하나</p>
-				<p class="hidden text-lg font-semibold text-gray-500/70 sm:block">god</p>
+				<p class="mr-4 hidden text-lg font-bold text-amber-500 sm:mr-0 sm:block">
+					{currentTrack.title}
+				</p>
+				<p class="hidden text-lg font-semibold text-gray-500/70 sm:block">{currentTrack.artist}</p>
 			</div>
 		</div>
 
@@ -268,20 +288,20 @@
 	</div>
 
 	<div class="flex justify-center space-x-9">
-		<button onclick={resetAudio} class="cursor-pointer transition duration-200 hover:scale-120">
+		<button onclick={previousPlay} class="cursor-pointer transition duration-200 hover:scale-120">
 			<StepBack size="32" strokeWidth="3" />
 		</button>
 
 		<button onclick={togglePlay} class="cursor-pointer transition duration-200 hover:scale-120">
-			{#if value}
+			{#if isPlaying}
 				<Pause size="32" strokeWidth="3" />
 			{:else}
 				<Play size="32" strokeWidth="3" />
 			{/if}
 		</button>
 
-		<button onclick={stopAudio} class="cursor-pointer transition duration-200 hover:scale-120">
-			<SkipForward  size="32" strokeWidth="3" />
+		<button onclick={nextPlay} class="cursor-pointer transition duration-200 hover:scale-120">
+			<SkipForward size="32" strokeWidth="3" />
 		</button>
 	</div>
 </div>
