@@ -145,7 +145,7 @@
 	{/if}
 
 	<!-- Comments List -->
-	<div class="comment-scrollbar max-h-96 space-y-4 overflow-y-auto">
+	<div class="comment-scrollbar max-h-full space-y-4 overflow-y-auto">
 		{#each comments as comment (comment.id)}
 			<div
 				class="rounded-xs border border-pink-200 bg-gradient-to-r from-pink-100 to-blue-100 p-4 shadow-sm"

@@ -52,7 +52,7 @@
 		if (remainingSlots <= 0) {
 			toast(`사진은 최대 ${MAX_PHOTOS}개까지 업로드할 수 있습니다.`, {
 				icon: '⚠️',
-				duration: 2121
+				duration: 1212
 			});
 			target.value = '';
 			return;
@@ -68,7 +68,7 @@
 				if (isDuplicate) {
 					toast(`"${file.name}"은 이미 업로드된 파일입니다.`, {
 						icon: '❌',
-						duration: 2121
+						duration: 1212
 					});
 					continue;
 				}
@@ -100,6 +100,7 @@
 	function removePhoto(id: number): void {
 		photos = photos.filter((photo: Photo) => photo.id !== id);
 		if (currentIndex >= photos.length) currentIndex = Math.max(0, photos.length - 1);
+		if (photos.length === 0) showModal = false; // modal 창에 컨텐츠가 아무것도 없을 때
 	}
 
 	function nextPhoto() {
@@ -149,7 +150,7 @@
 			<button
 				transition:fade={{ duration: 210 }}
 				class={`cursor-pointer rounded-full font-bold transition ${
-					size === 'small' ? 'h-6 w-6 text-sm' : 'h-12 w-12 text-lg'
+					size === 'small' ? 'h-6 w-6 text-sm' : 'h-6 w-6 text-sm sm:h-12 sm:w-12 sm:text-lg'
 				} ${
 					index === currentIndex
 						? 'bg-fuchsia-400 text-white'
@@ -213,18 +214,18 @@
 					>‹</button
 				>
 
-				<!-- 이미지 -->
-				<!-- https://svelte.dev/docs/svelte/key 참고 -->
-				{#key photos[currentIndex].id}
-					<button onclick={openModal} class="w-full border-none bg-transparent p-0">
-						<img
-							transition:fade={{ duration: 210 }}
-							src={photos[currentIndex].url}
-							alt={photos[currentIndex].name}
-							class="h-100 w-full cursor-pointer rounded-2xl bg-black object-contain shadow-md"
-						/>
-					</button>
-				{/key}
+				<button class="relative h-100 w-full" onclick={openModal}>
+					{#each photos as photo, index (photo.id)}
+						{#if index === currentIndex}
+							<img
+								transition:fade={{ duration: 500 }}
+								src={photo.url}
+								alt={photo.name}
+								class="absolute inset-0 h-full w-full cursor-pointer rounded-2xl bg-black object-contain shadow-md"
+							/>
+						{/if}
+					{/each}
+				</button>
 
 				<!-- 오른쪽 화살표 -->
 				<button
@@ -236,7 +237,7 @@
 				<!-- 삭제 버튼 -->
 				<button
 					onclick={() => removePhoto(photos[currentIndex].id)}
-					class="absolute top-2 right-2 cursor-pointer rounded-full px-2 py-1 text-xl shadow-md transition duration-300 hover:scale-110"
+					class="absolute top-2 right-2 cursor-pointer rounded-full px-2 py-1 text-xl transition duration-300 hover:scale-110"
 				>
 					🗑️
 				</button>
@@ -274,43 +275,46 @@
 			onkeydown={() => {}}
 			role="button"
 			tabindex="0"
-			aria-label="Prevent Close modal"
+			aria-label="Prevent close modal"
 		>
 			<div class="relative z-22 flex h-full w-full items-center justify-center">
 				<button
 					onclick={() => removePhoto(photos[currentIndex].id)}
-					class="absolute top-6 right-18 z-23 cursor-pointer rounded-full text-4xl shadow-md transition duration-300 hover:scale-110"
+					class="absolute top-2 right-10 z-23 cursor-pointer rounded-full text-xl transition duration-300 hover:scale-110 sm:top-3 sm:right-12 sm:text-2xl"
 				>
 					🗑️
 				</button>
 
 				<button
 					onclick={closeModal}
-					class="absolute top-1 right-4 z-23 cursor-pointer text-7xl text-fuchsia-400 transition duration-300 hover:scale-110 hover:text-fuchsia-500"
+					class="absolute top-0 right-3 z-23 cursor-pointer text-4xl text-fuchsia-400 transition duration-300 hover:scale-110 hover:text-fuchsia-500 sm:text-5xl"
 					>×</button
 				>
 				<button
 					onclick={prevPhoto}
-					class="absolute left-4 z-23 cursor-pointer text-7xl text-fuchsia-400 transition duration-300 hover:scale-110 hover:text-fuchsia-500"
+					class="absolute left-4 z-23 cursor-pointer text-5xl text-fuchsia-400 transition duration-300 hover:scale-110 hover:text-fuchsia-500 sm:text-6xl"
 					>‹</button
 				>
-				{#key photos[currentIndex].id}
-					<img
-						transition:fade={{ duration: 500 }}
-						src={photos[currentIndex].url}
-						alt={photos[currentIndex].name}
-						class="absolute z-22 h-full w-full cursor-pointer rounded-2xl bg-black object-contain shadow-xl"
-					/>
-				{/key}
+
+				{#each photos as photo, index (photo.id)}
+					{#if index === currentIndex}
+						<img
+							transition:fade={{ duration: 500 }}
+							src={photo.url}
+							alt={photo.name}
+							class="absolute z-22 h-full w-full cursor-pointer rounded-2xl bg-black object-contain shadow-xl"
+						/>
+					{/if}
+				{/each}
 
 				<button
 					onclick={nextPhoto}
-					class="absolute right-4 z-23 cursor-pointer text-7xl text-fuchsia-400 transition duration-300 hover:scale-110 hover:text-fuchsia-500"
+					class="absolute right-4 z-23 cursor-pointer text-5xl text-fuchsia-400 transition duration-300 hover:scale-110 hover:text-fuchsia-500 sm:text-7xl"
 					>›</button
 				>
 			</div>
 			<!-- 업로드 시간 -->
-			<p class="mt-2 text-lg">{photos[currentIndex].timestamp}</p>
+			<p class="text-md mt-2 sm:text-lg">{photos[currentIndex].timestamp}</p>
 			<!-- 페이지네이션 -->
 			{@render Pagination('large')}
 		</div>

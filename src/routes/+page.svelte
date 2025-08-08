@@ -5,8 +5,7 @@
 	import MusicPlayer from '../components/MusicPlayer.svelte';
 	import FallingLeaves from '../components/FallingLeaves.svelte';
 	import type { PageProps } from './$types';
-	import { scale } from 'svelte/transition';
-
+	import { scale, fade } from 'svelte/transition';
 	// from +page.server.ts
 	let { data }: PageProps = $props();
 	const musicList = data.musicList;
@@ -15,13 +14,19 @@
 	let currentUser = $state<string>('');
 	let isModalOpen = $state<boolean>(true);
 	let isPlaying = $state<boolean>(false);
+	let showToast = $state<boolean>(false);
 
 	function handleKeydown(event: KeyboardEvent) {
 		if (isModalOpen && event.key === 'Enter') {
 			closeModal();
 		}
 		if (isModalOpen && event.key === 'Escape') {
-			window.history.back();
+			if (window.history.length <= 1) {
+				showToast = true;
+				setTimeout(() => (showToast = false), 1000);
+			} else {
+				window.history.back();
+			}
 		}
 	}
 
@@ -52,10 +57,24 @@
 	}
 
 	function handleGoBack(): void {
-		window.history.back();
+		if (window.history.length <= 1) {
+			showToast = true;
+			setTimeout(() => (showToast = false), 1212);
+		} else {
+			window.history.back();
+		}
 	}
 </script>
 
+{#if showToast}
+	<div
+		transition:fade
+		class="fixed top-8 left-1/2 z-[999] -translate-x-1/2 rounded-lg bg-black/80 px-4 py-2 text-center text-sm text-white shadow-lg backdrop-blur-xs"
+	>
+		갈 곳이 없다면<br /><span class="font-bold text-pink-400">👶🏻순돌이 세계로🌎</span><br
+		/>들어오시죠!
+	</div>
+{/if}
 <!-- select-none : 마우스 드래그를 막는 기능 -->
 <main class="bg-gradient-to-br from-teal-200 via-rose-100 to-lime-200 select-none">
 	<FallingLeaves />

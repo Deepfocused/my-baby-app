@@ -40,7 +40,7 @@
 			'🎉'
 		];
 		const isMobile: boolean = window.innerWidth <= 640; // 모바일 기준
-		const count: number = isMobile ? 100 : 300;
+		const count: number = isMobile ? 121 : 210;
 
 		leaves = Array.from({ length: count }, (_, i) => ({
 			id: i,

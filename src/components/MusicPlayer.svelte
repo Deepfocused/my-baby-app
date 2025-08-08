@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import {
 		StepBack,
 		Play,
@@ -22,7 +23,7 @@
 
 	let audio: HTMLAudioElement;
 
-	let currentTime = $state<number>(0);
+	let currentTime = $state<number>(0); // for accessibility
 	let duration = $state<number>(0);
 	let isDragging = false;
 	let progressBar: HTMLDivElement;
@@ -32,6 +33,20 @@
 	let isMuted = $state<boolean>(false); // 음소거 상태 변수
 	let playbackRate = $state<number>(1.0);
 
+	let repeatMode = $state<'all' | 'one' | 'none'>('all');
+	let isShuffle = $state<boolean>(false);
+
+	// Fisher–Yates 알고리즘
+	function shuffle<T>(array: T[]): T[] {
+		for (let i = array.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[array[i], array[j]] = [array[j], array[i]];
+		}
+		return array;
+	}
+	onMount(() => {
+		musicList = shuffle([...musicList]); // 원본을 복사해서 셔플
+	});
 	$effect(() => {
 		duration = audio?.duration || 0;
 		if (audio && isPlaying) {
@@ -142,37 +157,6 @@
 		isMuted = !isMuted;
 	}
 
-	// 키보드 이벤트 핸들러 추가
-	function handleKeyDown(event: KeyboardEvent) {
-		if (!audio) return;
-
-		const seekAmount = 5; // 5초씩 이동
-		let newTime = audio?.currentTime;
-
-		switch (event.key) {
-			case 'ArrowLeft':
-				newTime -= seekAmount;
-				break;
-			case 'ArrowRight':
-				newTime += seekAmount;
-				break;
-			default:
-				return;
-		}
-
-		// 재생 시간이 유효한 범위에 있는지 확인하고 설정
-		if (newTime >= 0 && newTime <= duration) {
-			audio.currentTime = newTime;
-			currentTime = newTime;
-		} else if (newTime < 0) {
-			audio.currentTime = 0;
-			currentTime = 0;
-		} else if (newTime > duration) {
-			audio.currentTime = duration;
-			currentTime = duration;
-		}
-	}
-
 	function togglePlay(): void {
 		if (!audio) return;
 		if (isPlaying) {
@@ -185,7 +169,7 @@
 
 	function previousPlay() {
 		if (currentTrackIndex >= 0) {
-			isPlaying = false;
+			isPlaying = false; // 상태 변경을 위해
 			currentTrackIndex = (currentTrackIndex - 1 + musicList.length) % musicList.length;
 			audio.currentTime = 0;
 			currentTime = 0;
@@ -202,6 +186,53 @@
 			audio?.play().then(() => (isPlaying = true));
 		}
 	}
+
+	function repeatPlay() {
+		repeatMode = repeatMode === 'all' ? 'one' : repeatMode === 'one' ? 'none' : 'all';
+	}
+
+	function shufflePlay() {
+		isShuffle = !isShuffle;
+	}
+
+	function handleEnded() {
+		isPlaying = false;
+
+		if (repeatMode === 'none') {
+			audio.currentTime = 0;
+			currentTime = 0; // handleTimeUpdate 가 동작하지 않아서 직접 값을 대입
+			return;
+		} else if (repeatMode === 'one') {
+			audio.currentTime = 0;
+			audio?.play().then(() => (isPlaying = true));
+			return;
+		} // "all"
+		else {
+			let nextIndex: number;
+
+			if (isShuffle) {
+				do {
+					nextIndex = Math.floor(Math.random() * musicList.length);
+				} while (nextIndex === currentTrackIndex); // 같은 곡 반복 방지
+			} else {
+				nextIndex = currentTrackIndex + 1;
+			}
+
+			if (nextIndex >= musicList.length) {
+				if (repeatMode === 'all') {
+					currentTrackIndex = 0;
+					audio.currentTime = 0;
+					audio?.play().then(() => (isPlaying = true));
+				} else {
+					isPlaying = false; // 종료
+				}
+			} else {
+				currentTrackIndex = nextIndex;
+				audio.currentTime = 0;
+				audio?.play().then(() => (isPlaying = true));
+			}
+		}
+	}
 </script>
 
 <div
@@ -212,7 +243,7 @@
 		src={currentTrack.src}
 		ontimeupdate={handleTimeUpdate}
 		onloadeddata={handleLoadedData}
-		loop
+		onended={handleEnded}
 		playsinline
 	></audio>
 	<div class="flex items-center justify-center sm:justify-between">
@@ -269,7 +300,6 @@
 		onmousedown={startDrag}
 		onmouseup={stopDrag}
 		onmousemove={handleSeek}
-		onkeydown={handleKeyDown}
 		role="slider"
 		aria-label="Audio play time"
 		aria-valuemin="0"
@@ -288,9 +318,16 @@
 	</div>
 
 	<div class="flex justify-center space-x-7">
-		<button onclick={nextPlay} class="cursor-pointer transition duration-200 hover:scale-120">
-			<Repeat color="#f91075" size="21" strokeWidth="3" />
+		<button onclick={repeatPlay} class="cursor-pointer transition duration-200 hover:scale-120">
+			{#if repeatMode === 'one'}
+				<Repeat1 color="#f91075" size="21" strokeWidth="3" />
+			{:else if repeatMode === 'none'}
+				<Repeat color="#000000" size="21" strokeWidth="3" />
+			{:else}
+				<Repeat color="#f91075" size="21" strokeWidth="3" />
+			{/if}
 		</button>
+
 		<button onclick={previousPlay} class="cursor-pointer transition duration-200 hover:scale-120">
 			<StepBack size="32" strokeWidth="3" />
 		</button>
@@ -307,8 +344,8 @@
 			<SkipForward size="32" strokeWidth="3" />
 		</button>
 
-		<button onclick={nextPlay} class="cursor-pointer transition duration-200 hover:scale-120">
-			<Shuffle color="#f91075" size="21" strokeWidth="3" />
+		<button onclick={shufflePlay} class="cursor-pointer transition duration-200 hover:scale-120">
+			<Shuffle color={isShuffle ? '#f91075' : '#aaa'} size="21" strokeWidth="3" />
 		</button>
 	</div>
 </div>
