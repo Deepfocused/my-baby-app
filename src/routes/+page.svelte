@@ -82,11 +82,8 @@
 	<section class="relative container mx-auto max-w-md px-4 py-8">
 		<header class="mb-8 text-center">
 			<div class="rounded-3xl border border-rose-200 bg-white/70 p-6 shadow-lg backdrop-blur-xs">
-				<p class="mb-2 hidden text-2xl font-bold text-rose-400 lg:block">
-					너무💘귀여운 🦾순돌이🍼 탄생
-				</p>
-				<p class="mb-2 text-2xl font-bold text-rose-400 lg:hidden">
-					너무💘귀여운 <br />🦾순돌이🍼 탄생
+				<p class="mb-2 text-2xl font-bold text-rose-400 sm:text-3xl">
+					너무💘귀여운 <br /> 🦾순돌이🍼 탄생
 				</p>
 				<p class="font-bold text-orange-400">2025년 9월 20일에 태어나다!</p>
 				<div class="mt-1 flex justify-center space-x-2">

@@ -17,7 +17,7 @@ export const load: PageServerLoad = async () => {
 		const name = file.replace('.mp3', '');
 		const [title, artist] = name.split('-');
 		const thumbnailFile = thumbnailFiles.find((t: string) => t.startsWith(artist));
-		const thumbnail = thumbnailFile ? `/thumbnail/${thumbnailFile}` : '/thumbnail/default.jpg';
+		const thumbnail = thumbnailFile ? `/thumbnail/${thumbnailFile}` : '/thumbnail/none.jpg';
 
 		return {
 			title: title?.trim() ?? 'Unknown',

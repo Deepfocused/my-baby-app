@@ -246,19 +246,23 @@
 		onended={handleEnded}
 		playsinline
 	></audio>
-	<div class="flex items-center justify-center sm:justify-between">
-		<div class="flex flex-col items-center justify-center sm:flex-row">
-			<img src={currentTrack.thumbnail} alt="가수 사진" class="mr-4 h-16 w-16 rounded-md" />
+	<div class="flex items-center justify-between">
+		<div class="flex flex-col items-center justify-center min-[425px]:flex-row">
+			<img src={currentTrack.thumbnail} alt="가수 사진" class="mr-2 h-16 w-16 rounded-md" />
 			<div>
-				<p class="mr-4 hidden text-lg font-bold text-orange-400 sm:mr-0 sm:block">
+				<p class="text-md hidden font-bold text-orange-400 max-[450px]:text-xs min-[425px]:block">
 					{currentTrack.title}
 				</p>
-				<p class="hidden text-lg font-semibold text-gray-500/70 sm:block">{currentTrack.artist}</p>
+				<p
+					class="hidden text-sm font-semibold text-gray-500/70 max-[450px]:text-xs min-[425px]:block"
+				>
+					{currentTrack.artist}
+				</p>
 			</div>
 		</div>
 
 		<div class="flex flex-col items-center justify-center">
-			<div class="flex items-center justify-end space-x-3">
+			<div class="flex items-center justify-end space-x-2">
 				<button onclick={toggleMute} class="text-gray-500">
 					{#if isMuted}
 						<VolumeOff size="24" />
@@ -268,7 +272,7 @@
 				</button>
 				<input
 					type="range"
-					class="h-2 w-3/5 cursor-pointer appearance-none rounded-lg bg-gray-200 accent-red-300"
+					class="h-2 w-4/5 cursor-pointer appearance-none rounded-lg bg-gray-200 accent-red-300"
 					min="0"
 					max="1"
 					step="0.1"
@@ -278,11 +282,11 @@
 				<span class="text-sm text-gray-600">{volume.toFixed(1)}x</span>
 			</div>
 
-			<div class="flex items-center justify-end space-x-3">
+			<div class="flex items-center justify-end space-x-2">
 				<ChevronsUp size="24" class="text-gray-500" />
 				<input
 					type="range"
-					class="h-2 w-3/5 cursor-pointer appearance-none rounded-lg bg-gray-200 accent-red-300"
+					class="h-2 w-4/5 cursor-pointer appearance-none rounded-lg bg-gray-200 accent-red-300"
 					min="0.5"
 					max="2.0"
 					step="0.1"
@@ -317,14 +321,14 @@
 		<div class="text-xs text-gray-600">-{formatTime(duration - currentTime)}</div>
 	</div>
 
-	<div class="flex justify-center space-x-7">
+	<div class="mt-2 flex justify-between">
 		<button onclick={repeatPlay} class="cursor-pointer transition duration-200 hover:scale-120">
 			{#if repeatMode === 'one'}
-				<Repeat1 color="#f91075" size="21" strokeWidth="3" />
+				<Repeat1 color="#f91075" size="28" strokeWidth="3" />
 			{:else if repeatMode === 'none'}
-				<Repeat color="#000000" size="21" strokeWidth="3" />
+				<Repeat color="#000000" size="28" strokeWidth="3" />
 			{:else}
-				<Repeat color="#f91075" size="21" strokeWidth="3" />
+				<Repeat color="#f91075" size="28" strokeWidth="3" />
 			{/if}
 		</button>
 
@@ -345,7 +349,7 @@
 		</button>
 
 		<button onclick={shufflePlay} class="cursor-pointer transition duration-200 hover:scale-120">
-			<Shuffle color={isShuffle ? '#f91075' : '#aaa'} size="21" strokeWidth="3" />
+			<Shuffle color={isShuffle ? '#f91075' : '#aaa'} size="28" strokeWidth="3" />
 		</button>
 	</div>
 </div>
