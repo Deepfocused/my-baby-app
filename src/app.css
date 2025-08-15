@@ -1,0 +1,79 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+/* comment 스크롤바 전체 영역 */
+.comment-scrollbar::-webkit-scrollbar {
+	width: 7px; /* 가로 스크롤바 너비 0으로 설정 */
+	height: 0px; /* 스크롤바 높이 지정 (세로 스크롤바) */
+}
+
+/* comment 스크롤바 트랙 (배경) */
+.comment-scrollbar::-webkit-scrollbar-track {
+	background-image: linear-gradient(
+		to top,
+		rgb(249, 234, 243),
+		rgb(222, 234, 250)
+	); /* 슬라이더 배경색 */
+	background-color: transparent; /* 트랙 배경색 */
+	border-radius: 1px; /* 슬라이더 모서리 둥글게 처리 */
+}
+
+/* comment 스크롤바 핸들 (움직이는 부분) */
+.comment-scrollbar::-webkit-scrollbar-thumb {
+	background-image: linear-gradient(rgb(250, 215, 235), rgb(203, 224, 250)); /* 슬라이더 배경색 */
+	border-radius: 1px; /* 슬라이더 모서리 둥글게 처리 */
+}
+
+/* comment 스크롤바 핸들 hover 시 */
+.comment-scrollbar::-webkit-scrollbar-thumb:hover {
+	background-image: linear-gradient(rgb(247, 205, 229), rgb(192, 215, 247)); /* 슬라이더 배경색 */
+	border-radius: 1px; /* 슬라이더 모서리 둥글게 처리 */
+}
+
+/* 스크롤바 전체 영역 */
+::-webkit-scrollbar {
+	width: 10px; /* 가로 스크롤바 너비 0으로 설정 */
+	height: 0px; /* 스크롤바 높이 지정 (세로 스크롤바) */
+}
+
+/* 스크롤바 트랙 (배경) */
+::-webkit-scrollbar-track {
+	background-image: linear-gradient(
+		to bottom,
+		rgb(172, 250, 235),
+		rgb(254, 235, 236),
+		rgb(204, 250, 124)
+	); /* 슬라이더 배경색 */
+	border-radius: 1px; /* 슬라이더 모서리 둥글게 처리 */
+}
+
+/* 스크롤바 핸들 (움직이는 부분) */
+::-webkit-scrollbar-thumb {
+	background-image: linear-gradient(
+		rgb(140, 249, 198),
+		rgb(255, 166, 181),
+		rgb(241, 246, 167)
+	); /* 슬라이더 배경색 */
+	border-radius: 1px; /* 슬라이더 모서리 둥글게 처리 */
+}
+
+/* 핸들 hover 시 */
+::-webkit-scrollbar-thumb:hover {
+	background-image: linear-gradient(
+		rgb(134, 253, 197),
+		rgb(252, 152, 169),
+		rgb(238, 244, 151)
+	); /* 슬라이더 배경색 */
+	border-radius: 1px; /* 슬라이더 모서리 둥글게 처리 */
+}
+
+/* 
+브라우저 기본 포커스 스타일 삭제
+
+사용자가 탭키로 해당 요소에 포커스를 옮기거나 
+클릭해서 포커스가 가면 브라우저가 자동으로 스타일을 표시
+*/
+* {
+	outline: none;
+}
