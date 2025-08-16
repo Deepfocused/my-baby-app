@@ -15,20 +15,23 @@
 	let showModal = $state<boolean>(true);
 	let isPlaying = $state<boolean>(false);
 
-	let modalBackButton: HTMLButtonElement;
-	let modalEntryButton: HTMLButtonElement;
+	// $state 안붙이면 dev시 경고가 뜨길래 붙임.
+	let modalBackButton: HTMLButtonElement | undefined;
+	let modalEntryButton: HTMLButtonElement | undefined;
+	// let modalBackButton = $state<HTMLButtonElement | undefined>(undefined);
+	// let modalEntryButton = $state<HTMLButtonElement | undefined>(undefined);
 
 	const closeModal: () => void = () => {
 		showModal = false;
 		isPlaying = true;
 
-		modalEntryButton.classList.add('scale-130');
-		setTimeout(() => modalEntryButton.classList.remove('scale-130'), 210);
+		modalEntryButton?.classList.add('scale-130');
+		setTimeout(() => modalEntryButton?.classList.remove('scale-130'), 210);
 	};
 
 	const handleGoBack: () => void = () => {
-		modalBackButton.classList.add('scale-130');
-		setTimeout(() => modalBackButton.classList.remove('scale-130'), 210);
+		modalBackButton?.classList.add('scale-130');
+		setTimeout(() => modalBackButton?.classList.remove('scale-130'), 210);
 
 		if (window.history.length <= 1) {
 			toast('순돌이(👶🏻)두고 다른 곳 가시려구😭?', {

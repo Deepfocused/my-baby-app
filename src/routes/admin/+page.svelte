@@ -9,8 +9,8 @@
 
 	let username = $state('');
 	let password = $state('');
-	let loginButton: HTMLButtonElement;
-	let modalUserNameInput: HTMLInputElement;
+	let loginButton: HTMLButtonElement | undefined;
+	let modalUserNameInput: HTMLInputElement | undefined;
 
 	const login: () => Promise<void> = async () => {
 		const res = await fetch('/api/admin-login', {
@@ -32,8 +32,8 @@
 	const handleSubmit: (event: Event) => Promise<void> = async (event) => {
 		event.preventDefault(); // 브라우저의 기본 새로고침 동작을 막기
 		// Enter 눌렀을 때 버튼 scale 효과 주기
-		loginButton.classList.add('scale-130');
-		setTimeout(() => loginButton.classList.remove('scale-130'), 210);
+		loginButton?.classList.add('scale-130');
+		setTimeout(() => loginButton?.classList.remove('scale-130'), 210);
 
 		// 실제 로그인 함수 호출
 		await login();

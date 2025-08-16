@@ -9,15 +9,18 @@
 	let isAdmin = $state<boolean>(data.isAdmin);
 	let showModal = $state<boolean>(false);
 
-	let modalYesButton: HTMLButtonElement;
-	let modalNoButton: HTMLButtonElement;
+	// $state 안붙이면 dev시 경고가 뜨길래 붙임.
+	let modalYesButton: HTMLButtonElement | undefined;
+	let modalNoButton: HTMLButtonElement | undefined;
+	// let modalYesButton = $state<HTMLButtonElement | undefined>(undefined);
+	// let modalNoButton = $state<HTMLButtonElement | undefined>(undefined);
 
 	const logout: () => Promise<void> = async () => {
 		await fetch('/api/admin-logout', { method: 'POST' });
 		showModal = false;
 		await invalidate('admin:decision');
-		modalYesButton.classList.add('scale-130');
-		setTimeout(() => modalYesButton.classList.remove('scale-130'), 210);
+		modalYesButton?.classList.add('scale-130');
+		setTimeout(() => modalYesButton?.classList.remove('scale-130'), 210);
 		// sveltekit의 goto 는 기본적으로 SPA 내비게이션 -> 이 상황에서는 사용 x
 		window.location.replace('/');
 	};
@@ -27,8 +30,8 @@
 	};
 
 	const cancelLogout = () => {
-		modalNoButton.classList.add('scale-130');
-		setTimeout(() => modalNoButton.classList.remove('scale-130'), 210);
+		modalNoButton?.classList.add('scale-130');
+		setTimeout(() => modalNoButton?.classList.remove('scale-130'), 210);
 		showModal = false;
 	};
 
