@@ -1,18 +1,18 @@
 import { json } from '@sveltejs/kit';
-import { supabase } from '$lib/supabaseClient';
+import { supabase } from '$lib/server/superbase';
 import type { RequestHandler } from './$types';
 
-// GET: 댓글 목록
+// 댓글 목록 얻기
 export const GET: RequestHandler = async () => {
 	const { data, error } = await supabase
 		.from('comments')
 		.select('*')
 		.order('date', { ascending: false });
-	if (error) return new Response(error.message, { status: 500 });
+	if (error) return json({ error: error.message }, { status: 500 });
 	return json(data);
 };
 
-// POST: 댓글 추가
+// 댓글 추가
 export const POST: RequestHandler = async ({ request }) => {
 	const { author, password, text } = await request.json();
 	if (!author || !password || !text) return new Response('Bad Request', { status: 400 });
@@ -22,7 +22,6 @@ export const POST: RequestHandler = async ({ request }) => {
 		.insert([{ author, password, text, date: new Date(), timestamp: new Date().toLocaleString() }])
 		.select()
 		.single();
-
-	if (error) return new Response(error.message, { status: 500 });
+	if (error) return json({ error: error.message }, { status: 500 });
 	return json(data);
 };

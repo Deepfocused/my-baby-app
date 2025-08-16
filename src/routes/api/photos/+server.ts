@@ -3,8 +3,8 @@ import { supabase } from '$lib/server/superbase';
 import { BUCKET_NAME, BUCKET_PATH } from '$env/static/private';
 // import { join as joinPath } from 'path';
 import type { RequestHandler } from './$types';
-// 목록 불러오기
 
+// 목록 불러오기
 export const GET: RequestHandler = async () => {
 	const { data, error } = await supabase.storage.from(BUCKET_NAME).list(BUCKET_PATH, {
 		sortBy: { column: 'name', order: 'asc' }
@@ -34,7 +34,7 @@ export const GET: RequestHandler = async () => {
 	return json(files);
 };
 
-// 업로드
+// 이미지 업로드
 export const POST: RequestHandler = async ({ request }) => {
 	const formData = await request.formData();
 	const file = formData.get('file') as File;
@@ -64,14 +64,14 @@ export const POST: RequestHandler = async ({ request }) => {
 	return json({ id: id, url: publicUrl, name: name, timestamp: timeStamp });
 };
 
-// 삭제
+// 이미지 삭제
 export const DELETE: RequestHandler = async ({ request }) => {
 	const { name } = await request.json();
 	if (!name) return json({ error: `삭제할 이미지 ${name} 가 존재하지 않음` }, { status: 400 });
 
 	const removePath = `${BUCKET_PATH}/${name}`;
+	console.log(removePath);
 	const { error } = await supabase.storage.from(BUCKET_NAME).remove([removePath]);
 	if (error) return json({ error: error.message }, { status: 500 });
-
-	return json({ success: true }, { status: 500 });
+	return json({ success: true });
 };

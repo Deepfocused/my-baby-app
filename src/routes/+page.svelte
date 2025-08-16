@@ -3,7 +3,7 @@
 	import toast, { Toaster } from 'svelte-5-french-toast';
 	import FallingLeaves from '../components/FallingLeaves.svelte';
 	import PhotoUpload from '../components/PhotoUpload.svelte';
-	// import CommentSection from '../components/CommentSection.svelte';
+	import CommentSection from '../components/CommentSection.svelte';
 	import MusicPlayer from '../components/MusicPlayer.svelte';
 	import type { PageProps } from './$types';
 	import { scale } from 'svelte/transition';
@@ -28,13 +28,13 @@
 		showModal = false;
 		isPlaying = true;
 
-		modalEntryButton?.classList.add('scale-130');
-		setTimeout(() => modalEntryButton?.classList.remove('scale-130'), 210);
+		// modalEntryButton?.classList.add('scale-120');
+		// setTimeout(() => modalEntryButton?.classList.remove('scale-120'), 210);
 	};
 
 	const handleGoBack: () => void = () => {
-		modalBackButton?.classList.add('scale-130');
-		setTimeout(() => modalBackButton?.classList.remove('scale-130'), 210);
+		modalBackButton?.classList.add('scale-120');
+		setTimeout(() => modalBackButton?.classList.remove('scale-120'), 210);
 
 		if (window.history.length <= 1) {
 			toast('순돌이(👶🏻)두고 다른 곳 가시려구😭?', {
@@ -49,7 +49,7 @@
 		try {
 			const res = await fetch('/api/birthday');
 			if (!res.ok) {
-				toast(`생일 로딩 실패: ${res.status}`, { icon: '😥', duration: 1000 });
+				toast(`생일 로딩 실패: ${res.status}`, { icon: '❌', duration: 1000 });
 				return;
 			}
 			const birthday = await res.json();
@@ -73,10 +73,9 @@
 		if (res.ok) {
 			const json = await res.json();
 			birthdayMessage = json.message;
+			toast('저장 성공!', { icon: '✅', duration: 1000 });
 		} else {
-			toast.error('업데이트 실패', {
-				duration: 1000
-			});
+			toast('업데이트 실패', { icon: '❌', duration: 1000 });
 		}
 	};
 
@@ -123,7 +122,7 @@
 			<div class="flex space-x-4">
 				<button
 					bind:this={modalEntryButton}
-					class="cursor-pointer rounded-lg bg-rose-500 px-6 py-3 text-lg font-bold text-white transition duration-300 hover:shadow-xl hover:shadow-rose-300 focus:scale-105 active:scale-110 max-[480px]:text-sm"
+					class="cursor-pointer rounded-lg bg-rose-500 px-6 py-3 text-lg font-bold text-white transition duration-300 hover:shadow-xl hover:shadow-rose-300 focus:scale-105 max-[480px]:text-sm"
 					onclick={closeModal}
 				>
 					입장하기
@@ -131,7 +130,7 @@
 
 				<button
 					bind:this={modalBackButton}
-					class="cursor-pointer rounded-lg bg-emerald-500 px-6 py-3 text-lg font-bold text-white transition duration-300 hover:shadow-xl hover:shadow-emerald-300 focus:scale-105 active:scale-110 max-[480px]:text-sm"
+					class="cursor-pointer rounded-lg bg-emerald-500 px-6 py-3 text-lg font-bold text-white transition duration-300 hover:shadow-xl hover:shadow-emerald-300 focus:scale-105 active:scale-120 max-[480px]:text-sm"
 					onclick={handleGoBack}
 				>
 					뒤로가기
@@ -151,30 +150,33 @@
 				너무💘귀여운 <br /> 🦾순돌이🍼 탄생
 			</p>
 			<!-- <p class="font-bold text-orange-400">2025년 9월 20일에 태어나다!</p> -->
-			<p class="flex items-center justify-center space-x-2 font-bold text-orange-400">
+			<div class="flex flex-col items-center justify-center">
 				{#if isAdmin}
 					<input
 						bind:value={updateMessage}
-						class="w-64 border-b-2 border-orange-400 bg-transparent px-1 py-0.5 font-bold text-orange-400 sm:w-80"
+						class="text-md w-72 cursor-pointer rounded-lg border-dashed border-orange-300 bg-transparent p-1 text-center font-bold text-orange-400 transition duration-300 hover:bg-orange-100 hover:shadow-xl focus:ring-2 focus:ring-orange-300 active:scale-110 max-[480px]:w-64 max-[480px]:text-sm"
 					/>
-					<button
-						class="cursor-pointer rounded-lg bg-orange-400 px-1 py-1 text-white transition hover:bg-orange-500"
-						onclick={saveBirthday}
-					>
-						저장
-					</button>
-					<button
-						class="cursor-pointer rounded-lg bg-gray-200 px-1 py-1 text-gray-600 transition hover:bg-gray-300"
-						onclick={() => {
-							updateMessage = birthdayMessage;
-						}}
-					>
-						취소
-					</button>
+					<div class="mt-2 flex items-center justify-center space-x-3">
+						<button
+							class="cursor-pointer rounded-lg bg-orange-500 p-2 text-sm font-bold text-white transition duration-300 hover:bg-orange-300 hover:shadow-xl active:scale-110 max-[480px]:text-xs"
+							onclick={saveBirthday}
+						>
+							저장
+						</button>
+						<button
+							class="cursor-pointer rounded-lg bg-gray-400 p-2 text-sm font-bold text-gray-700 transition duration-300 hover:bg-gray-300 hover:shadow-xl active:scale-110 max-[480px]:text-xs"
+							onclick={() => {
+								updateMessage = birthdayMessage;
+								toast('저장 취소!', { icon: '⚠️', duration: 1000 });
+							}}
+						>
+							취소
+						</button>
+					</div>
 				{:else}
-					<span>{birthdayMessage}</span>
+					<span class="font-bold text-orange-400">{birthdayMessage}</span>
 				{/if}
-			</p>
+			</div>
 			<div class="mt-1 flex justify-center space-x-2">
 				<span class="text-3xl">👨🏻</span>
 				<span class="text-2xl">👩🏻</span>
@@ -191,10 +193,10 @@
 		<PhotoUpload {isAdmin} />
 	</section>
 	<section>
-		<!-- <CommentSection/> -->
+		<CommentSection />
 	</section>
 
-	<footer class="mt-6 text-center text-sm text-gray-700">
+	<footer class="mt-6 text-center text-sm text-gray-700 max-[480px]:text-xs">
 		<p>🌸❤️ Made by 순돌이 아빠 ❤️🌸</p>
 	</footer>
 </section>

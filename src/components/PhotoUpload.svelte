@@ -25,7 +25,7 @@
 			const download = await res.json();
 
 			if (download?.error) {
-				toast(`이미지 로딩 실패: ${download.error}`, { icon: '😥', duration: 1000 });
+				toast(`이미지 로딩 실패: ${download.error}`, { icon: '❌', duration: 1000 });
 				return;
 			}
 
@@ -73,7 +73,7 @@
 				const res = await fetch('/api/photos', { method: 'POST', body: formData });
 				const upload = await res.json();
 				if (upload?.error) {
-					toast(`이미지 업로드 실패: ${upload.error}`, { icon: '😥', duration: 1000 });
+					toast(`이미지 업로드 실패: ${upload.error}`, { icon: '❌', duration: 1000 });
 					continue;
 				}
 
@@ -87,6 +87,8 @@
 
 				photos = [...photos, newPhoto];
 				currentIndex = photos.length - 1;
+
+				toast('이미지 업로드 완료!', { icon: '✅', duration: 1000 });
 			}
 
 			/*
@@ -121,7 +123,7 @@
 			});
 			const remove = await res.json();
 			if (remove?.error) {
-				toast(`이미지 삭제 실패: ${remove.error}`, { icon: '😥', duration: 1000 });
+				toast(`이미지 삭제 실패: ${remove.error}`, { icon: '❌', duration: 1000 });
 				return;
 			}
 		} catch (err) {
@@ -258,7 +260,7 @@
 		<button
 			onclick={triggerFileInput}
 			disabled={!isAdmin}
-			class="hover: rounded-lg border-1 border-dashed border-fuchsia-200 bg-gradient-to-r from-pink-400 to-blue-400 text-white transition duration-300 hover:scale-110 hover:shadow-xl hover:shadow-fuchsia-200 disabled:opacity-50 disabled:hover:scale-100"
+			class="rounded-lg border-1 border-dashed border-fuchsia-200 bg-gradient-to-r from-pink-400 to-blue-400 text-white transition duration-300 hover:scale-110 hover:shadow-xl hover:shadow-fuchsia-200 disabled:opacity-50 disabled:hover:scale-100"
 		>
 			{#if isAdmin}
 				<div class="flex cursor-pointer items-center px-4 py-2">

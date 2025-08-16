@@ -12,8 +12,8 @@
 .comment-scrollbar::-webkit-scrollbar-track {
 	background-image: linear-gradient(
 		to top,
-		rgb(249, 234, 243),
-		rgb(222, 234, 250)
+		rgb(255, 244, 253),
+		rgb(232, 244, 255)
 	); /* 슬라이더 배경색 */
 	background-color: transparent; /* 트랙 배경색 */
 	border-radius: 1px; /* 슬라이더 모서리 둥글게 처리 */
@@ -21,13 +21,13 @@
 
 /* comment 스크롤바 핸들 (움직이는 부분) */
 .comment-scrollbar::-webkit-scrollbar-thumb {
-	background-image: linear-gradient(rgb(250, 215, 235), rgb(203, 224, 250)); /* 슬라이더 배경색 */
+	background-image: linear-gradient(rgb(240, 205, 225), rgb(193, 214, 240)); /* 슬라이더 배경색 */
 	border-radius: 1px; /* 슬라이더 모서리 둥글게 처리 */
 }
 
 /* comment 스크롤바 핸들 hover 시 */
 .comment-scrollbar::-webkit-scrollbar-thumb:hover {
-	background-image: linear-gradient(rgb(247, 205, 229), rgb(192, 215, 247)); /* 슬라이더 배경색 */
+	background-image: linear-gradient(rgb(237, 195, 219), rgb(182, 205, 237)); /* 슬라이더 배경색 */
 	border-radius: 1px; /* 슬라이더 모서리 둥글게 처리 */
 }
 

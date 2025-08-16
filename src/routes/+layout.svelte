@@ -21,13 +21,13 @@
 		if (res.ok) {
 			showModal = false;
 			await invalidate('admin:decision');
-			modalYesButton?.classList.add('scale-130');
-			setTimeout(() => modalYesButton?.classList.remove('scale-130'), 210);
+			modalYesButton?.classList.add('scale-120');
+			setTimeout(() => modalYesButton?.classList.remove('scale-120'), 210);
 			// sveltekit의 goto 는 기본적으로 SPA 내비게이션 -> 이 상황에서는 사용 x
 			window.location.replace('/');
 		} else {
 			const data = await res.json();
-			toast.error(data.message, { duration: 1000 });
+			toast(`${data.message}`, { icon: '❌', duration: 1000 });
 		}
 	};
 
@@ -36,8 +36,8 @@
 	};
 
 	const cancelLogout = () => {
-		modalNoButton?.classList.add('scale-130');
-		setTimeout(() => modalNoButton?.classList.remove('scale-130'), 210);
+		modalNoButton?.classList.add('scale-120');
+		setTimeout(() => modalNoButton?.classList.remove('scale-120'), 210);
 		showModal = false;
 	};
 
@@ -67,7 +67,7 @@
 <div class="text-sm max-[480px]:text-xs">
 	<Toaster position="top-center" />
 </div>
-<main class="bg-gradient-to-br from-teal-200 via-rose-100 to-lime-200 select-none">
+<main class="min-h-screen bg-gradient-to-br from-teal-200 via-rose-100 to-lime-200 select-none">
 	{#if isAdmin}
 		<div class="fixed top-4 right-4 z-99 flex">
 			<button
@@ -96,14 +96,14 @@
 					<button
 						bind:this={modalYesButton}
 						onclick={logout}
-						class="cursor-pointer rounded-lg bg-rose-500 px-6 py-3 text-lg font-bold text-white transition duration-300 hover:shadow-xl hover:shadow-rose-300 focus:scale-105 active:scale-110 max-[480px]:text-sm"
+						class="cursor-pointer rounded-lg bg-rose-500 px-6 py-3 text-lg font-bold text-white transition duration-300 hover:shadow-xl hover:shadow-rose-300 focus:scale-105 active:scale-120 max-[480px]:text-sm"
 					>
 						네
 					</button>
 					<button
 						bind:this={modalNoButton}
 						onclick={cancelLogout}
-						class="cursor-pointer rounded-lg bg-black px-6 py-3 text-lg font-bold text-white transition duration-300 hover:shadow-xl hover:shadow-gray-500 focus:scale-105 active:scale-110 max-[480px]:text-sm"
+						class="cursor-pointer rounded-lg bg-black px-6 py-3 text-lg font-bold text-white transition duration-300 hover:shadow-xl hover:shadow-gray-500 focus:scale-105 active:scale-120 max-[480px]:text-sm"
 					>
 						아니오
 					</button>
