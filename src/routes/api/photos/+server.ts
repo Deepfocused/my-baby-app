@@ -70,7 +70,7 @@ export const DELETE: RequestHandler = async ({ request }) => {
 	if (!name) return json({ error: 'path 없음' }, { status: 400 });
 
 	const removePath = `${BUCKET_PATH}/${name}`;
-	const { error } = await supabase.storage.from(BUCKET_NAME).remove([removePath]);
+	const { data, error } = await supabase.storage.from(BUCKET_NAME).remove([removePath]);
 	if (error) return json({ error: error.message }, { status: 500 });
 
 	return json({ error: null, success: true }, { status: 500 });

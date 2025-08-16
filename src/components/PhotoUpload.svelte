@@ -23,15 +23,14 @@
 		const res = await fetch('/api/photos');
 		const download = await res.json();
 
-		if (download[0].name !== '.emptyFolderPlaceholder') {
-			console.log(download);
-			photos = download.map((item: Photo) => ({
+		photos = download
+			.filter((item: Photo) => item.name !== '.emptyFolderPlaceholder') // 이름이 .emptyFolderPlaceholder 인 아이템 제외
+			.map((item: Photo) => ({
 				id: item.id,
 				url: item.url,
 				name: item.name,
 				timestamp: item.timestamp
 			}));
-		}
 	};
 
 	const handleFileUpload: (event: Event) => Promise<void> = async (event) => {
@@ -110,9 +109,11 @@
 				return;
 			}
 
+			console.log("dsfsdafasdf")
 			photos = photos.filter((photo: Photo) => photo.id !== id);
 			if (currentIndex >= photos.length) currentIndex = Math.max(0, photos.length - 1);
 			if (photos.length === 0) showModal = false; // modal 창에 컨텐츠가 아무것도 없을 때
+			
 		} catch (err) {
 			if (err instanceof Error) {
 				toast(`파일 삭제 중 오류 발생: ${err.message}`, { icon: '😥', duration: 1000 });
