@@ -2,6 +2,7 @@
 	import '../app.css';
 	import type { LayoutProps } from './$types';
 	import { fade } from 'svelte/transition';
+	import toast, { Toaster } from 'svelte-5-french-toast';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 
@@ -16,13 +17,18 @@
 	// let modalNoButton = $state<HTMLButtonElement | undefined>(undefined);
 
 	const logout: () => Promise<void> = async () => {
-		await fetch('/api/admin-logout', { method: 'POST' });
-		showModal = false;
-		await invalidate('admin:decision');
-		modalYesButton?.classList.add('scale-130');
-		setTimeout(() => modalYesButton?.classList.remove('scale-130'), 210);
-		// sveltekit의 goto 는 기본적으로 SPA 내비게이션 -> 이 상황에서는 사용 x
-		window.location.replace('/');
+		const res = await fetch('/api/admin-logout', { method: 'POST' });
+		if (res.ok) {
+			showModal = false;
+			await invalidate('admin:decision');
+			modalYesButton?.classList.add('scale-130');
+			setTimeout(() => modalYesButton?.classList.remove('scale-130'), 210);
+			// sveltekit의 goto 는 기본적으로 SPA 내비게이션 -> 이 상황에서는 사용 x
+			window.location.replace('/');
+		} else {
+			const data = await res.json();
+			toast.error(data.message, { duration: 1000 });
+		}
 	};
 
 	const confirmLogout = () => {
@@ -58,12 +64,15 @@
 	});
 </script>
 
+<div class="text-sm max-[480px]:text-xs">
+	<Toaster position="top-center" />
+</div>
 <main class="bg-gradient-to-br from-teal-200 via-rose-100 to-lime-200 select-none">
 	{#if isAdmin}
 		<div class="fixed top-4 right-4 z-99 flex">
 			<button
 				onclick={confirmLogout}
-				class="text-md cursor-pointer rounded-full bg-gray-800 px-3 py-2 font-black text-white shadow-xl transition duration-300 hover:scale-110"
+				class="text-md cursor-pointer rounded-lg bg-gray-800 px-3 py-2 font-black text-white shadow-xl transition duration-300 hover:scale-110"
 			>
 				관리자 모드
 			</button>

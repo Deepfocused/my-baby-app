@@ -61,17 +61,17 @@ export const POST: RequestHandler = async ({ request }) => {
 	const {
 		data: { publicUrl }
 	} = supabase.storage.from(BUCKET_NAME).getPublicUrl(path);
-	return json({ error: null, id: id, url: publicUrl, name: name, timestamp: timeStamp });
+	return json({ id: id, url: publicUrl, name: name, timestamp: timeStamp });
 };
 
 // 삭제
 export const DELETE: RequestHandler = async ({ request }) => {
 	const { name } = await request.json();
-	if (!name) return json({ error: 'path 없음' }, { status: 400 });
+	if (!name) return json({ error: `삭제할 이미지 ${name} 가 존재하지 않음` }, { status: 400 });
 
 	const removePath = `${BUCKET_PATH}/${name}`;
-	const { data, error } = await supabase.storage.from(BUCKET_NAME).remove([removePath]);
+	const { error } = await supabase.storage.from(BUCKET_NAME).remove([removePath]);
 	if (error) return json({ error: error.message }, { status: 500 });
 
-	return json({ error: null, success: true }, { status: 500 });
+	return json({ success: true }, { status: 500 });
 };

@@ -8,7 +8,8 @@ const APW = ADMIN_PW || 'test';
 
 export const POST: RequestHandler = async ({ request, cookies }) => {
 	const { username, password } = await request.json();
-
+	if (!username || !password)
+		return json({ error: `username or password 정보 없음` }, { status: 400 });
 	/* 
 		세션아이디 랜덤하게 발급 -> 서버 메모리에 저장
 		세션 탈취 방지에 최소한의 보안만 설정

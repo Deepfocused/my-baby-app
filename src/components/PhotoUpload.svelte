@@ -20,17 +20,30 @@
 	let modalDiv = $state<HTMLDivElement | undefined>(undefined);
 
 	const loadPhotos: () => Promise<void> = async () => {
-		const res = await fetch('/api/photos');
-		const download = await res.json();
+		try {
+			const res = await fetch('/api/photos');
+			const download = await res.json();
 
-		photos = download
-			.filter((item: Photo) => item.name !== '.emptyFolderPlaceholder') // 이름이 .emptyFolderPlaceholder 인 아이템 제외
-			.map((item: Photo) => ({
-				id: item.id,
-				url: item.url,
-				name: item.name,
-				timestamp: item.timestamp
-			}));
+			if (download?.error) {
+				toast(`이미지 로딩 실패: ${download.error}`, { icon: '😥', duration: 1000 });
+				return;
+			}
+
+			photos = download
+				.filter((item: Photo) => item.name !== '.emptyFolderPlaceholder') // 이름이 .emptyFolderPlaceholder 인 아이템 제외
+				.map((item: Photo) => ({
+					id: item.id,
+					url: item.url,
+					name: item.name,
+					timestamp: item.timestamp
+				}));
+		} catch (err) {
+			if (err instanceof Error) {
+				toast(`이미지 로딩중 오류 발생: ${err.message}`, { icon: '😥', duration: 1000 });
+			} else {
+				toast(`알 수 없는 오류 발생`, { icon: '😥', duration: 1000 });
+			}
+		}
 	};
 
 	const handleFileUpload: (event: Event) => Promise<void> = async (event) => {
@@ -59,8 +72,8 @@
 
 				const res = await fetch('/api/photos', { method: 'POST', body: formData });
 				const upload = await res.json();
-				if (upload.error != null) {
-					toast(`업로드 실패: ${upload.error}`, { icon: '😥', duration: 1000 });
+				if (upload?.error) {
+					toast(`이미지 업로드 실패: ${upload.error}`, { icon: '😥', duration: 1000 });
 					continue;
 				}
 
@@ -83,7 +96,7 @@
 			target.value = '';
 		} catch (err) {
 			if (err instanceof Error) {
-				toast(`파일 업로드 중 오류 발생: ${err.message}`, { icon: '😥', duration: 1000 });
+				toast(`이미지 업로드 중 오류 발생: ${err.message}`, { icon: '😥', duration: 1000 });
 			} else {
 				toast(`알 수 없는 오류 발생`, { icon: '😥', duration: 1000 });
 			}
@@ -94,29 +107,26 @@
 		const targetPhoto = photos.find((photo: Photo) => photo.id === id);
 		if (!targetPhoto) return;
 
-		// api 서버에서 삭제하기
+		// 1. UI 상에서 먼저 제거하기
+		photos = photos.filter((photo: Photo) => photo.id !== id);
+		if (currentIndex >= photos.length) currentIndex = Math.max(0, photos.length - 1);
+		if (photos.length === 0) showModal = false; // modal 창에 컨텐츠가 아무것도 없을 때
+
+		// 2. api 서버에서 삭제하기
 		try {
 			const res = await fetch('/api/photos', {
 				method: 'DELETE',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ name: targetPhoto.name })
 			});
-			if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
 			const remove = await res.json();
-			if (remove.error != null) {
-				toast(`삭제 실패: ${remove.error}`, { icon: '😥' });
+			if (remove?.error) {
+				toast(`이미지 삭제 실패: ${remove.error}`, { icon: '😥', duration: 1000 });
 				return;
 			}
-
-			console.log("dsfsdafasdf")
-			photos = photos.filter((photo: Photo) => photo.id !== id);
-			if (currentIndex >= photos.length) currentIndex = Math.max(0, photos.length - 1);
-			if (photos.length === 0) showModal = false; // modal 창에 컨텐츠가 아무것도 없을 때
-			
 		} catch (err) {
 			if (err instanceof Error) {
-				toast(`파일 삭제 중 오류 발생: ${err.message}`, { icon: '😥', duration: 1000 });
+				toast(`이미지 삭제 중 오류 발생: ${err.message}`, { icon: '😥', duration: 1000 });
 			} else {
 				toast(`알 수 없는 오류 발생`, { icon: '😥', duration: 1000 });
 			}
@@ -204,7 +214,7 @@
 			<!-- 템플릿 리터럴 사용(백틱 ` 와 함께) -->
 			<button
 				transition:fade={{ duration: 200 }}
-				class={`cursor-pointer rounded-full font-bold transition ${
+				class={`cursor-pointer rounded-lg font-bold transition ${
 					size === 'small' ? 'h-6 w-6 text-sm' : 'h-6 w-6 text-sm sm:h-12 sm:w-12 sm:text-lg'
 				} ${
 					index === currentIndex
@@ -305,7 +315,7 @@
 				{#if isAdmin}
 					<button
 						onclick={() => removePhoto(photos[currentIndex].id)}
-						class="absolute top-2 right-2 cursor-pointer rounded-full px-2 py-1 text-xl transition duration-300 hover:scale-110"
+						class="absolute top-2 right-2 cursor-pointer rounded-lg px-2 py-1 text-xl transition duration-300 hover:scale-110"
 					>
 						🗑️
 					</button>
@@ -313,7 +323,7 @@
 					<button
 						onclick={() => removePhoto(photos[currentIndex].id)}
 						disabled={!isAdmin}
-						class="absolute top-2 right-2 cursor-not-allowed rounded-full px-2 py-1 text-xl transition duration-300 hover:scale-110 disabled:opacity-50 disabled:hover:scale-100"
+						class="absolute top-2 right-2 cursor-not-allowed rounded-lg px-2 py-1 text-xl transition duration-300 hover:scale-110 disabled:opacity-50 disabled:hover:scale-100"
 					>
 						🗑️
 					</button>
@@ -358,7 +368,7 @@
 				{#if isAdmin}
 					<button
 						onclick={() => removePhoto(photos[currentIndex].id)}
-						class="absolute top-2 right-10 z-23 cursor-pointer rounded-full text-xl transition duration-300 hover:scale-110 sm:top-3 sm:right-12 sm:text-2xl"
+						class="absolute top-2 right-10 z-23 cursor-pointer rounded-lg text-xl transition duration-300 hover:scale-110 sm:top-3 sm:right-12 sm:text-2xl"
 					>
 						🗑️
 					</button>
@@ -366,7 +376,7 @@
 					<button
 						onclick={() => removePhoto(photos[currentIndex].id)}
 						disabled={!isAdmin}
-						class="absolute top-2 right-10 z-23 cursor-not-allowed rounded-full text-xl transition duration-300 hover:scale-110 disabled:opacity-50 disabled:hover:scale-100 sm:top-3 sm:right-12 sm:text-2xl"
+						class="absolute top-2 right-10 z-23 cursor-not-allowed rounded-lg text-xl transition duration-300 hover:scale-110 disabled:opacity-50 disabled:hover:scale-100 sm:top-3 sm:right-12 sm:text-2xl"
 					>
 						🗑️
 					</button>

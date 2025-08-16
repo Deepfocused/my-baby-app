@@ -306,7 +306,7 @@
 
 	<div
 		bind:this={progressBar}
-		class="mt-4 h-3 w-full cursor-pointer overflow-hidden rounded-full bg-gray-200"
+		class="mt-4 h-3 w-full cursor-pointer overflow-hidden rounded-lg bg-gray-200"
 		onmousedown={startDrag}
 		onmouseup={stopDrag}
 		onmousemove={mouseSeek}
