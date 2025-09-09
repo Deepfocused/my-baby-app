@@ -1,0 +1,68 @@
+[
+  {
+    "title": "너에게닿기를",
+    "artist": "10cm",
+    "src": "/music/너에게닿기를-10cm.mp3",
+    "thumbnail": "/thumbnail/10cm.jpg"
+  },
+  {
+    "title": "달리기",
+    "artist": "옥상달빛",
+    "src": "/music/달리기-옥상달빛.mp3",
+    "thumbnail": "/thumbnail/옥상달빛.jpg"
+  },
+  {
+    "title": "숲",
+    "artist": "최유리",
+    "src": "/music/숲-최유리.mp3",
+    "thumbnail": "/thumbnail/최유리.jpg"
+  },
+  {
+    "title": "아로하",
+    "artist": "조정석",
+    "src": "/music/아로하-조정석.mp3",
+    "thumbnail": "/thumbnail/조정석.jpg"
+  },
+  {
+    "title": "에피소드",
+    "artist": "이무진",
+    "src": "/music/에피소드-이무진.mp3",
+    "thumbnail": "/thumbnail/이무진.jpg"
+  },
+  {
+    "title": "청춘만화",
+    "artist": "이무진",
+    "src": "/music/청춘만화-이무진.mp3",
+    "thumbnail": "/thumbnail/이무진.jpg"
+  },
+  {
+    "title": "촛불하나",
+    "artist": "god",
+    "src": "/music/촛불하나-god.mp3",
+    "thumbnail": "/thumbnail/god.jpg"
+  },
+  {
+    "title": "파노라마",
+    "artist": "이찬혁",
+    "src": "/music/파노라마-이찬혁.mp3",
+    "thumbnail": "/thumbnail/이찬혁.jpg"
+  },
+  {
+    "title": "하늘색풍선",
+    "artist": "god",
+    "src": "/music/하늘색풍선-god.mp3",
+    "thumbnail": "/thumbnail/god.jpg"
+  },
+  {
+    "title": "황금가면",
+    "artist": "김동률",
+    "src": "/music/황금가면-김동률.mp3",
+    "thumbnail": "/thumbnail/김동률.jpg"
+  },
+  {
+    "title": "후라이의꿈",
+    "artist": "악동뮤지션",
+    "src": "/music/후라이의꿈-악동뮤지션.mp3",
+    "thumbnail": "/thumbnail/악동뮤지션.jpg"
+  }
+]
