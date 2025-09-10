@@ -14,7 +14,7 @@
 
 	let photoDescription = $state<string>('');
 	// 사진 개수 제한 상수
-	const MAX_PHOTOS = 10;
+	const MAX_PHOTOS = 12;
 
 	// 슬라이드 제스처 감지
 	let touchStartX: number = 0;
@@ -464,7 +464,7 @@
 				transition:fade={{ duration: 500 }}
 				class={`cursor-pointer leading-none font-bold transition ${
 					size === 'small'
-						? 'h-7 w-7 rounded-sm text-base max-[640px]:h-6 max-[640px]:w-6 max-[640px]:text-sm max-[480px]:h-[18px] max-[480px]:w-[18px] max-[480px]:text-xs'
+						? 'h-6 w-6 rounded-sm text-base max-[640px]:h-5 max-[640px]:w-5 max-[640px]:text-[13px] max-[480px]:h-[16px] max-[480px]:w-[16px] max-[480px]:text-[11px] max-[350px]:h-[14px] max-[350px]:w-[14px] max-[350px]:text-[10px]'
 						: 'h-8 w-8 rounded-lg text-lg max-[640px]:h-7 max-[640px]:w-7 max-[640px]:text-base max-[480px]:h-5 max-[480px]:w-5 max-[480px]:text-xs'
 				} ${
 					index === currentIndex
