@@ -465,7 +465,7 @@
 				class={`cursor-pointer leading-none font-bold transition ${
 					size === 'small'
 						? 'h-6 w-6 rounded-sm text-base max-[640px]:h-5 max-[640px]:w-5 max-[640px]:text-[13px] max-[480px]:h-[16px] max-[480px]:w-[16px] max-[480px]:text-[11px] max-[350px]:h-[14px] max-[350px]:w-[14px] max-[350px]:text-[10px]'
-						: 'h-8 w-8 rounded-lg text-lg max-[640px]:h-7 max-[640px]:w-7 max-[640px]:text-base max-[480px]:h-5 max-[480px]:w-5 max-[480px]:text-xs'
+						: 'h-8 w-8 rounded-lg text-lg max-[640px]:h-7 max-[640px]:w-7 max-[640px]:text-base max-[480px]:h-5 max-[480px]:w-5 max-[480px]:text-xs max-[350px]:h-4 max-[350px]:w-4 max-[350px]:text-[11px]'
 				} ${
 					index === currentIndex
 						? 'bg-fuchsia-600 text-yellow-300'
@@ -660,7 +660,7 @@
 						await removePhoto();
 					}}
 					hidden={!isAdmin}
-					class="absolute top-4 right-12 z-23 cursor-pointer rounded-lg text-2xl leading-none transition duration-300 hover:scale-110 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100 max-[640px]:top-3 max-[640px]:right-10 max-[640px]:text-lg max-[480px]:top-2 max-[480px]:right-[34px] max-[480px]:text-base"
+					class="absolute top-4 right-12 z-23 cursor-pointer rounded-lg text-2xl leading-none transition duration-300 hover:scale-110 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100 max-[640px]:top-3 max-[640px]:right-10 max-[640px]:text-lg max-[480px]:top-2 max-[480px]:right-9 max-[480px]:text-base"
 				>
 					🗑️
 				</button>
