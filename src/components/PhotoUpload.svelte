@@ -605,7 +605,7 @@
 					</div>
 				</div>
 			{:else}
-				<div class="relative h-[32px] w-2/3">
+				<div class="relative h-[32px] w-4/5">
 					{#key currentIndex}
 						<!-- 메시지가 달라질 때마다 key를 바꿔 DOM 교체 -->
 						<p
@@ -701,7 +701,7 @@
 				onkeydown={() => {}}
 				role="button"
 				tabindex="0"
-				class="relative h-[48px] w-1/5 max-[1280px]:w-1/3 max-[1024px]:w-2/5 max-[640px]:w-3/5"
+				class="relative h-[48px] w-1/3 max-[1024px]:w-1/2 max-[640px]:w-5/7"
 			>
 				{#key currentIndex}
 					<!-- 메시지가 달라질 때마다 key를 바꿔 DOM 교체 -->
